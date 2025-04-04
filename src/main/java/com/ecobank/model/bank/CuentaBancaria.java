@@ -24,16 +24,33 @@ public class CuentaBancaria {
     @Column(name = "tipo_cuenta", nullable = false)
     private TipoCuentaEnum tipoCuenta;
 
+    @Column(name = "requiere_activacion")
+    private Boolean requiereActivacion;
+
+    @Column(name = "fecha_activacion")
+    private LocalDateTime fechaActivacion;
+
+    @Column(name = "documento_identidad", length = 50)
+    private String documentoIdentidad;
+
+    @Column(name = "telefono_verificado")
+    private Boolean telefonoVerificado;
+
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
     public CuentaBancaria() {
     }
 
-    public CuentaBancaria(BigDecimal saldo, int numeroDeCuenta, TipoCuentaEnum tipoCuenta, LocalDateTime fechaCreacion) {
+    public CuentaBancaria(Long cuentaId, BigDecimal saldo, int numeroDeCuenta, TipoCuentaEnum tipoCuenta, Boolean requiereActivacion, LocalDateTime fechaActivacion, String documentoIdentidad, Boolean telefonoVerificado, LocalDateTime fechaCreacion) {
+        this.cuentaId = cuentaId;
         this.saldo = saldo;
         this.numeroDeCuenta = numeroDeCuenta;
         this.tipoCuenta = tipoCuenta;
+        this.requiereActivacion = requiereActivacion;
+        this.fechaActivacion = fechaActivacion;
+        this.documentoIdentidad = documentoIdentidad;
+        this.telefonoVerificado = telefonoVerificado;
         this.fechaCreacion = fechaCreacion;
     }
 
@@ -65,6 +82,38 @@ public class CuentaBancaria {
         this.tipoCuenta = tipoCuenta;
     }
 
+    public Boolean getRequiereActivacion() {
+        return requiereActivacion;
+    }
+
+    public void setRequiereActivacion(Boolean requiereActivacion) {
+        this.requiereActivacion = requiereActivacion;
+    }
+
+    public LocalDateTime getFechaActivacion() {
+        return fechaActivacion;
+    }
+
+    public void setFechaActivacion(LocalDateTime fechaActivacion) {
+        this.fechaActivacion = fechaActivacion;
+    }
+
+    public String getDocumentoIdentidad() {
+        return documentoIdentidad;
+    }
+
+    public void setDocumentoIdentidad(String documentoIdentidad) {
+        this.documentoIdentidad = documentoIdentidad;
+    }
+
+    public Boolean getTelefonoVerificado() {
+        return telefonoVerificado;
+    }
+
+    public void setTelefonoVerificado(Boolean telefonoVerificado) {
+        this.telefonoVerificado = telefonoVerificado;
+    }
+
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
@@ -80,6 +129,10 @@ public class CuentaBancaria {
         sb.append(", saldo=").append(saldo);
         sb.append(", numeroDeCuenta=").append(numeroDeCuenta);
         sb.append(", tipoCuenta=").append(tipoCuenta);
+        sb.append(", requiereActivacion=").append(requiereActivacion);
+        sb.append(", fechaActivacion=").append(fechaActivacion);
+        sb.append(", documentoIdentidad='").append(documentoIdentidad).append('\'');
+        sb.append(", telefonoVerificado=").append(telefonoVerificado);
         sb.append(", fechaCreacion=").append(fechaCreacion);
         sb.append('}');
         return sb.toString();
