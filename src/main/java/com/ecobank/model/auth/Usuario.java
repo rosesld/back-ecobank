@@ -3,6 +3,8 @@ package com.ecobank.model.auth;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "usuarios", indexes = @Index(name = "idx_usuario_email", columnList = "usuario_mail"))
@@ -36,6 +38,14 @@ public class Usuario {
 
     @Column(name = "usuario_fecha_actualizacion", nullable = true)
     private LocalDateTime usuarioFechaActualizacion;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuarios_roles",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private Set<Rol> roles = new HashSet<>();
 
     public Usuario() {
     }
@@ -118,6 +128,14 @@ public class Usuario {
 
     public void setUsuarioFechaActualizacion(LocalDateTime usuarioFechaActualizacion) {
         this.usuarioFechaActualizacion = usuarioFechaActualizacion;
+    }
+
+    public Set<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Rol> roles) {
+        this.roles = roles;
     }
 
     @Override
