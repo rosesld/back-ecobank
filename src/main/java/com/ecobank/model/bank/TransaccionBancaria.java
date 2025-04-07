@@ -32,6 +32,18 @@ public class TransaccionBancaria {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
+    @ManyToOne
+    @JoinColumn(name = "cuenta_origen", referencedColumnName = "cuenta_id", nullable = false)
+    private CuentaBancaria cuentaOrigen;
+
+    @ManyToOne
+    @JoinColumn(name = "cuenta_destino", referencedColumnName = "cuenta_id", nullable = false)
+    private CuentaBancaria cuentaDestino;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id", referencedColumnName = "estado_id", nullable = false)
+    private Estado estado;
+
     public TransaccionBancaria() {
     }
 
@@ -76,6 +88,30 @@ public class TransaccionBancaria {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public CuentaBancaria getCuentaOrigen() {
+        return cuentaOrigen;
+    }
+
+    public void setCuentaOrigen(CuentaBancaria cuentaOrigen) {
+        this.cuentaOrigen = cuentaOrigen;
+    }
+
+    public CuentaBancaria getCuentaDestino() {
+        return cuentaDestino;
+    }
+
+    public void setCuentaDestino(CuentaBancaria cuentaDestino) {
+        this.cuentaDestino = cuentaDestino;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     @Override

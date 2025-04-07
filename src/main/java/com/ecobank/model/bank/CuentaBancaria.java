@@ -1,5 +1,6 @@
 package com.ecobank.model.bank;
 
+import com.ecobank.model.auth.Usuario;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -38,6 +39,14 @@ public class CuentaBancaria {
 
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_id", referencedColumnName = "estado_id", nullable = false)
+    private Estado estado;
 
     public CuentaBancaria() {
     }
@@ -121,6 +130,23 @@ public class CuentaBancaria {
     public void setFechaCreacion(LocalDateTime fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+    public Usuario getUsuario(){
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
 
     @Override
     public String toString() {
