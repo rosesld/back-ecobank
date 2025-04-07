@@ -1,6 +1,8 @@
 package com.ecobank.model.commerce;
 
 
+import com.ecobank.model.auth.Usuario;
+import com.ecobank.model.bank.Estado;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -26,6 +28,14 @@ public class CarritoCompra {
         @Column(name = "carrito_fecha_actualizacion", nullable = false, updatable = true)
         private LocalDateTime carritoFechaActualizacion;
 
+        @ManyToOne
+        @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+        private Usuario usuario;
+
+        @ManyToOne
+        @JoinColumn(name = "carrito_estado", referencedColumnName = "estado_id", nullable = false)
+        private Estado estado;
+
         public CarritoCompra() {}
 
         public CarritoCompra(Integer carritocompraId, Integer usuarioId, Integer carritoEstado, LocalDateTime carritoFechaCreacion, LocalDateTime carritoFechaActualizacion) {
@@ -38,10 +48,6 @@ public class CarritoCompra {
 
     public Integer getCarritocompraId() {
         return carritocompraId;
-    }
-
-    public void setCarritocompraId(Integer carritocompraId) {
-        this.carritocompraId = carritocompraId;
     }
 
     public Integer getUsuarioId() {
@@ -74,6 +80,22 @@ public class CarritoCompra {
 
     public void setCarritoFechaActualizacion(LocalDateTime carritoFechaActualizacion) {
         this.carritoFechaActualizacion = carritoFechaActualizacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     @Override
