@@ -15,6 +15,9 @@ public class Comuna {
     private String comunaNombre;
 
     //TODO: RELACION CON LA TABLA REGION, traer llave foranea de region
+    @ManyToOne
+    @JoinColumn(name = "region_id", referencedColumnName = "region_id", nullable = false)
+    private Region region;
 
     public Comuna (){}
 
@@ -33,6 +36,18 @@ public class Comuna {
 
     public void setComunaNombre(String comunaNombre) {
         this.comunaNombre = comunaNombre;
+    }
+
+    public void setComunaId(Long comunaId) {
+        this.comunaId = comunaId;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
     }
 
     @Override

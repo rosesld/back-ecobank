@@ -37,6 +37,14 @@ public class Producto {
     @Column(name = "producto_fecha_actualizacion", nullable = true)
     private LocalDateTime productoFechaActualizacion;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
+    private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "vendedor_id", referencedColumnName = "vendedor_id", nullable = false)
+    private Vendedor vendedor;
+
     public Producto() {
     }
 
@@ -109,6 +117,22 @@ public class Producto {
 
     public void setProductoFechaActualizacion(LocalDateTime productoFechaActualizacion) {
         this.productoFechaActualizacion = productoFechaActualizacion;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Vendedor getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(Vendedor vendedor) {
+        this.vendedor = vendedor;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.ecobank.model.bank;
 
+import com.ecobank.model.auth.Usuario;
+import com.ecobank.model.commerce.Pedido;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -24,10 +26,19 @@ public class Pago {
     private LocalDateTime pagoFechaActulizacion;
 
     //TODO: RELACION CON LA TABLA PEDIDO, traer llave foranea
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", referencedColumnName = "pedido_id", nullable = false)
+    private Pedido pedido;
 
     //TODO: RELACION CON LA TABLA USUARIO, traer llave foranea
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     //TODO: RELACION CON LA TABLA ESTADO, traer llave foranea
+    @ManyToOne
+    @JoinColumn(name = "estado_id", referencedColumnName = "estado_id", nullable = false)
+    private Estado estado;
 
     public Pago (){}
 
@@ -64,6 +75,30 @@ public class Pago {
 
     public void setPagoFechaActulizacion(LocalDateTime pagoFechaActulizacion) {
         this.pagoFechaActulizacion = pagoFechaActulizacion;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 
     @Override

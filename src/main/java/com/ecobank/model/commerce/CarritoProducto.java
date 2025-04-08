@@ -20,8 +20,14 @@ public class CarritoProducto {
     private LocalDateTime carritoProductoFechaActualizacion;
 
     // TODO: Relacion con carrito_compras
-    // TODO: Relacion con producto
+    @ManyToOne
+    @JoinColumn(name = "carrito_compra_id", referencedColumnName = "carrito_compra_id", nullable = false)
+    private CarritoCompra carritoCompra;
 
+    // TODO: Relacion con producto
+    @ManyToOne
+    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id", nullable = false)
+    private Producto producto;
 
     public CarritoProducto() {
     }
@@ -50,6 +56,22 @@ public class CarritoProducto {
 
     public void setCarritoProductoFechaActualizacion(LocalDateTime carritoProductoFechaActualizacion) {
         this.carritoProductoFechaActualizacion = carritoProductoFechaActualizacion;
+    }
+
+    public CarritoCompra getCarritoCompra() {
+        return carritoCompra;
+    }
+
+    public void setCarritoCompra(CarritoCompra carritoCompra) {
+        this.carritoCompra = carritoCompra;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     @Override

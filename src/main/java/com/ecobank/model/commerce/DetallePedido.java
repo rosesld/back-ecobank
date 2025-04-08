@@ -1,5 +1,6 @@
 package com.ecobank.model.commerce;
 
+import com.ecobank.model.bank.Estado;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -24,8 +25,19 @@ public class DetallePedido {
     private LocalDateTime detallePedidoFechaActualizacion;
 
     // TODO: Relacion con Pedido
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", referencedColumnName = "pedido_id", nullable = false)
+    private Pedido pedido;
+
     // TODO: Relacion con Producto
+    @ManyToOne
+    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id", nullable = false)
+    private Producto producto;
+
     // TODO: Relacion con Estado
+    @ManyToOne
+    @JoinColumn(name = "detalles_pedido_estado", referencedColumnName = "estado_id", nullable = false)
+    private Estado detallesPedidoEstado;
 
     public DetallePedido(){}
 
@@ -62,6 +74,30 @@ public class DetallePedido {
 
     public void setDetallePedidoFechaActualizacion(LocalDateTime detallePedidoFechaActualizacion) {
         this.detallePedidoFechaActualizacion = detallePedidoFechaActualizacion;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Estado getDetallesPedidoEstado() {
+        return detallesPedidoEstado;
+    }
+
+    public void setDetallesPedidoEstado(Estado detallesPedidoEstado) {
+        this.detallesPedidoEstado = detallesPedidoEstado;
     }
 
     @Override

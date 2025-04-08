@@ -1,5 +1,6 @@
 package com.ecobank.model.commerce;
 
+import com.ecobank.model.auth.Usuario;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pedido_id")
     private Long pedidoId;
 
     @Column(name = "pedido_fecha", updatable = false)
@@ -19,7 +21,14 @@ public class Pedido {
     private LocalDateTime pedidoFechaActualizacion;
 
     //TODO: RELACION CON LA TABLA USUARIO, traer llave foranea
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     //TODO: RELACION CON LA TABLA DIRECCION ENVIO, traer llave foranea
+    @ManyToOne
+    @JoinColumn(name = "direccion_envio_id", referencedColumnName = "direccion_envio_id", nullable = false)
+    private DireccionEnvio direccionEnvio;
 
     public Pedido (){}
 
@@ -47,6 +56,22 @@ public class Pedido {
 
     public void setPedidoFechaActualizacion(LocalDateTime pedidoFechaActualizacion) {
         this.pedidoFechaActualizacion = pedidoFechaActualizacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public DireccionEnvio getDireccionEnvio() {
+        return direccionEnvio;
+    }
+
+    public void setDireccionEnvio(DireccionEnvio direccionEnvio) {
+        this.direccionEnvio = direccionEnvio;
     }
 
     @Override
