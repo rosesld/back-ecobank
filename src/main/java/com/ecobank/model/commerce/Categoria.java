@@ -2,6 +2,8 @@ package com.ecobank.model.commerce;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categories")
 public class Categoria {
@@ -18,6 +20,8 @@ public class Categoria {
     private String categoriaDescripcion;
 
     //TODO: A ESPERAR TABLE INTERMEDIA ENTRE PRODUCTO CATEGORIA N:N
+    @OneToMany(mappedBy = "categoria")
+    private List<Producto> productos;
 
     public Categoria() {}
 
@@ -45,6 +49,18 @@ public class Categoria {
 
     public void setCategoriaDescripcion(String categoriaDescripcion) {
         this.categoriaDescripcion = categoriaDescripcion;
+    }
+
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
     @Override

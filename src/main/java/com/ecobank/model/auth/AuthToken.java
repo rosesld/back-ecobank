@@ -30,6 +30,10 @@ public class AuthToken {
 
     // TODO: Relacion con Usuario
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     public AuthToken() {
 
     }

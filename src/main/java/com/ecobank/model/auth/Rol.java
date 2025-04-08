@@ -4,7 +4,8 @@ package com.ecobank.model.auth;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -18,22 +19,29 @@ public class Rol {
     @Column(name = "rol_nombre", nullable = false, length = 50)
     private String rolNombre;
 
-    @Column(name = "rol_descripcion", nullable = false, length = 254)
-    private String rolDescripcion;
-
     @Column(name = "rol_fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime rolFechaCreacion;
 
     @Column(name = "rol_fecha_actualizacion", nullable = true)
     private LocalDateTime rolFechaActualizacion;
 
+    @ManyToMany
+    @JoinTable(
+            name = "roles_permisos",
+            joinColumns = @JoinColumn(name = "rol_id"),
+            inverseJoinColumns = @JoinColumn(name = "permiso_id")
+    )
+    private Set<Permiso> permisos = new HashSet<>();
+
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<Usuario> usuarios = new HashSet<>();
+
     public Rol() {
     }
 
-    public Rol(Long rolId, String rolNombre, String rolDescripcion, LocalDateTime rolFechaCreacion, LocalDateTime rolFechaActualizacion) {
+    public Rol(Long rolId, String rolNombre, LocalDateTime rolFechaCreacion, LocalDateTime rolFechaActualizacion) {
         this.rolId = rolId;
         this.rolNombre = rolNombre;
-        this.rolDescripcion = rolDescripcion;
         this.rolFechaCreacion = rolFechaCreacion;
         this.rolFechaActualizacion = rolFechaActualizacion;
     }
@@ -48,14 +56,6 @@ public class Rol {
 
     public void setRolNombre(String rolNombre) {
         this.rolNombre = rolNombre;
-    }
-
-    public String getRolDescripcion() {
-        return rolDescripcion;
-    }
-
-    public void setRolDescripcion(String rolDescripcion) {
-        this.rolDescripcion = rolDescripcion;
     }
 
     public LocalDateTime getRolFechaCreacion() {
@@ -74,12 +74,19 @@ public class Rol {
         this.rolFechaActualizacion = rolFechaActualizacion;
     }
 
+    public Set<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(Set<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Rol{");
         sb.append("rolId=").append(rolId);
         sb.append(", rolNombre='").append(rolNombre).append('\'');
-        sb.append(", rolDescripcion='").append(rolDescripcion).append('\'');
         sb.append(", rolFechaCreacion=").append(rolFechaCreacion);
         sb.append(", rolFechaActualizacion=").append(rolFechaActualizacion);
         sb.append('}');
