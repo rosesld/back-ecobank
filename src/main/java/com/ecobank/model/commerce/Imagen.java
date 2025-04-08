@@ -19,6 +19,9 @@ public class Imagen {
     @Column(name = "imagen_fecha", nullable = false, updatable = true)
     private LocalDateTime imagenFecha;
 
+    @ManyToOne
+    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id", nullable = false)
+    private Producto producto;
 
     public Imagen() {}
 
@@ -28,7 +31,6 @@ public class Imagen {
         this.imagenUrl = imagenUrl;
         this.imagenFecha = imagenFecha;
     }
-
 
     public Long getImagenId() {
         return imagenId;
@@ -54,6 +56,15 @@ public class Imagen {
         this.imagenFecha = imagenFecha;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    // TODO: Averigurar esto.
     @PreUpdate
     public void actualizarFecha() {
         this.imagenFecha = LocalDateTime.now();

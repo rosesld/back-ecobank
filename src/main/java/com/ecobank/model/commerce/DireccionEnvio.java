@@ -1,5 +1,6 @@
 package com.ecobank.model.commerce;
 
+import com.ecobank.model.auth.Usuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -32,6 +33,18 @@ public class DireccionEnvio {
 
     @Column(name = "fecha_actualizacion", nullable = false, updatable = false)
     private LocalDateTime fechaActualizacion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "direccion_region_id", referencedColumnName = "region_id", nullable = false)
+    private Region region;
+
+    @ManyToOne
+    @JoinColumn(name = "direccion_comuna_id", referencedColumnName = "comuna_id", nullable = false)
+    private Comuna comuna;
 
     public DireccionEnvio() {}
 
@@ -99,6 +112,34 @@ public class DireccionEnvio {
 
     public LocalDateTime getFechaActualizacion() {
         return fechaActualizacion;
+    }
+
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
+        this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Comuna getComuna() {
+        return comuna;
+    }
+
+    public void setComuna(Comuna comuna) {
+        this.comuna = comuna;
     }
 
     @Override
