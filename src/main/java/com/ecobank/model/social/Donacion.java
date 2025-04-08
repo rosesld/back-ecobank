@@ -1,5 +1,7 @@
 package com.ecobank.model.social;
 
+import com.ecobank.model.auth.Usuario;
+import com.ecobank.model.commerce.Pedido;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,6 +20,18 @@ public class Donacion {
 
     @Column(name = "fecha_donacion", nullable = true, updatable = false)
     private LocalDateTime fechaDonacion;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @JoinColumn(name = "pedido_id", referencedColumnName = "pedido_id", nullable = false)
+    private Pedido pedido;
+
+    @ManyToOne
+    @JoinColumn(name = "fundacion_id", referencedColumnName = "fundacion_id", nullable = false)
+    private Fundacion fundacion;
 
     public Donacion() {
     }
@@ -50,6 +64,30 @@ public class Donacion {
 
     public void setFechaDonacion(LocalDateTime fechaDonacion) {
         this.fechaDonacion = fechaDonacion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Fundacion getFundacion() {
+        return fundacion;
+    }
+
+    public void setFundacion(Fundacion fundacion) {
+        this.fundacion = fundacion;
     }
 
     @Override
