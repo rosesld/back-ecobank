@@ -21,6 +21,10 @@ public class HistorialPassword {
 
     // TODO: Relacion con Usuario
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
+
     public HistorialPassword(){
 
     }

@@ -1,5 +1,6 @@
 package com.ecobank.model.commerce;
 
+import com.ecobank.model.auth.Usuario;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,6 +25,14 @@ public class Valoracion {
 
     @Column(name = "fecha_actualizacion", nullable = true)
     private LocalDateTime fechaActualizacion;
+
+    @ManyToOne
+    @JoinColumn(name = "producto_id", referencedColumnName = "producto_id", nullable = false)
+    private Producto producto;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     public Valoracion() {
     }
@@ -75,6 +84,22 @@ public class Valoracion {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
