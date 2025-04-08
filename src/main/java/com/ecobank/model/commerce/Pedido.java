@@ -11,6 +11,7 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pedido_id")
     private Long pedidoId;
 
     @Column(name = "pedido_fecha", updatable = false)

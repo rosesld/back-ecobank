@@ -13,20 +13,11 @@ public class DireccionEnvio {
     @Column(name = "direccion_envio_id")
     private Integer direccionenvioId;
 
-    @Column(name = "usuario_id")
-    private Integer usuarioId;
-
     @Column(name = "direccion_calle", nullable = false, length = 200)
     private String calle;
 
     @Column(name = "direccion_numero")
     private Integer numero;
-
-    @Column(name = "direccion_region_id")
-    private Integer regionId;
-
-    @Column(name = "direccion_comuna_id")
-    private Integer comunaId;
 
     @Column(name = "direccion_nota", length = 200)
     private String nota;
@@ -48,26 +39,23 @@ public class DireccionEnvio {
 
     public DireccionEnvio() {}
 
-    public DireccionEnvio(Integer usuarioId, String calle, Integer numero,
-                          Integer regionId, Integer comunaId, String nota) {
-        this.usuarioId = usuarioId;
+    public DireccionEnvio(Integer direccionenvioId, String calle, Integer numero, String nota, LocalDateTime fechaActualizacion, Usuario usuario, Region region, Comuna comuna) {
+        this.direccionenvioId = direccionenvioId;
         this.calle = calle;
         this.numero = numero;
-        this.regionId = regionId;
-        this.comunaId = comunaId;
         this.nota = nota;
+        this.fechaActualizacion = fechaActualizacion;
+        this.usuario = usuario;
+        this.region = region;
+        this.comuna = comuna;
     }
 
     public Integer getDireccionenvioId() {
         return direccionenvioId;
     }
 
-    public Integer getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Integer usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setDireccionenvioId(Integer direccionenvioId) {
+        this.direccionenvioId = direccionenvioId;
     }
 
     public String getCalle() {
@@ -84,22 +72,6 @@ public class DireccionEnvio {
 
     public void setNumero(Integer numero) {
         this.numero = numero;
-    }
-
-    public Integer getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
-    }
-
-    public Integer getComunaId() {
-        return comunaId;
-    }
-
-    public void setComunaId(Integer comunaId) {
-        this.comunaId = comunaId;
     }
 
     public String getNota() {
@@ -146,13 +118,13 @@ public class DireccionEnvio {
     public String toString() {
         final StringBuilder sb = new StringBuilder("DireccionEnvio{");
         sb.append("direccionenvioId=").append(direccionenvioId);
-        sb.append(", usuarioId=").append(usuarioId);
         sb.append(", calle='").append(calle).append('\'');
         sb.append(", numero=").append(numero);
-        sb.append(", regionId=").append(regionId);
-        sb.append(", comunaId=").append(comunaId);
         sb.append(", nota='").append(nota).append('\'');
         sb.append(", fechaActualizacion=").append(fechaActualizacion);
+        sb.append(", usuario=").append(usuario);
+        sb.append(", region=").append(region);
+        sb.append(", comuna=").append(comuna);
         sb.append('}');
         return sb.toString();
     }
