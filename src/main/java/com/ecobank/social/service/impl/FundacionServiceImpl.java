@@ -29,7 +29,12 @@ public class FundacionServiceImpl implements FundacionService {
 
     @Override
     public void deleteFundacion(Long id) {
-        fundacionRepository.deleteById(id);
+        Fundacion fundacionExistente = fundacionRepository.findById(id).orElseThrow( () -> new RuntimeException("NO EXISTE UNA FUNDACION CON ID "+ id));
+        if(fundacionExistente != null) {
+            fundacionRepository.deleteById(id);
+        } else {
+            throw new IllegalArgumentException(("No existe una fundacion con el ID " + id));
+        }
     }
 
     @Override
