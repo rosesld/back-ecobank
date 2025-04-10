@@ -1,6 +1,7 @@
 package com.ecobank.auth.service.impl;
 
 import com.ecobank.auth.model.Rol;
+import com.ecobank.auth.model.RolNombre;
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.repository.RolRepository;
 import com.ecobank.auth.repository.UsuarioRepository;
@@ -42,9 +43,11 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new IllegalArgumentException("El telefono del usuario no puede estar vacio");
         }
 
-        Rol rolCliente = new Rol();
-        rolCliente.setRolNombre("CLIENTE");
-        rolCliente = rolRepository.save(rolCliente);
+
+        Rol rolCliente = rolRepository.findByRolNombre("CLIENTE");
+        if(rolCliente == null) {
+            throw new IllegalArgumentException("El rol no existe");
+        }
         usuario.getRoles().add(rolCliente);
 
         return usuarioRepository.save(usuario);

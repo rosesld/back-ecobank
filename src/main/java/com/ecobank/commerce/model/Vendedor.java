@@ -1,6 +1,7 @@
 package com.ecobank.commerce.model;
 
 import com.ecobank.auth.model.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -20,13 +21,15 @@ public class Vendedor {
     @Column(name = "vendedor_razon_social")
     private String vendedorRazonSocial;
 
-    @Column(name = "vendedor_representante")
-    private String vendedorRepresentante;
+    //@Column(name = "vendedor_representante")
+    //private String vendedorRepresentante;
 
     @Column(name = "vendedor_fecha_registro", updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaRegistro;
 
     @Column(name = "vendedor_fecha_actualizacion")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaActualizacion;
 
     //TODO: RELACION CON LA TABLA USUARIO, traer llave foranea
@@ -40,9 +43,23 @@ public class Vendedor {
         this.vendedorId = vendedorId;
         this.vendedorRutPyme = vendedorRutPyme;
         this.vendedorRazonSocial = vendedorRazonSocial;
-        this.vendedorRepresentante = vendedorRepresentante;
+        //this.vendedorRepresentante = vendedorRepresentante;
         this.fechaRegistro = fechaRegistro;
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Se establece la fecha de registro solo al crear el usuario
+        if(this.fechaRegistro == null) {
+            this.fechaRegistro = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        // Se actualiza la fecha de actualización al modificar el usuario
+        this.fechaActualizacion = LocalDateTime.now();
     }
 
     public Long getVendedorId() {
@@ -65,13 +82,13 @@ public class Vendedor {
         this.vendedorRazonSocial = vendedorRazonSocial;
     }
 
-    public String getVendedorRepresentante() {
+    /* public String getVendedorRepresentante() {
         return vendedorRepresentante;
     }
 
     public void setVendedorRepresentante(String vendedorRepresentante) {
         this.vendedorRepresentante = vendedorRepresentante;
-    }
+    } */
 
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
@@ -103,7 +120,7 @@ public class Vendedor {
         sb.append("vendedorId=").append(vendedorId);
         sb.append(", vendedorRutPyme='").append(vendedorRutPyme).append('\'');
         sb.append(", vendedorRazonSocial='").append(vendedorRazonSocial).append('\'');
-        sb.append(", vendedorRepresentante='").append(vendedorRepresentante).append('\'');
+       // sb.append(", vendedorRepresentante='").append(vendedorRepresentante).append('\'');
         sb.append(", fechaRegistro=").append(fechaRegistro);
         sb.append(", fechaActualizacion=").append(fechaActualizacion);
         sb.append('}');
