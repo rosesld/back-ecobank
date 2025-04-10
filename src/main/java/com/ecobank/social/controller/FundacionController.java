@@ -29,8 +29,8 @@ public class FundacionController {
     }
 
     @GetMapping("/buscar/{id}")
-    public Fundacion findByIdFundacion(@PathVariable Long id) {
-        return fundacionServiceImpl.findByIdFundacion(id);
+    public ResponseEntity<Fundacion> findByIdFundacion(@PathVariable Long id) {
+        return ResponseEntity.ok(fundacionServiceImpl.findByIdFundacion(id));
     }
 
     @PutMapping("/actualizar/{id}")
@@ -43,5 +43,4 @@ public class FundacionController {
         fundacionServiceImpl.deleteFundacion(id);
         return new ResponseEntity<>("La fundacion ha sido Eliminada", HttpStatus.OK);
     }
-
 }
