@@ -1,5 +1,6 @@
 package com.ecobank.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class Usuario {
     private String usuarioNombre;
 
     @Column(name = "usuario_apellido_paterno", nullable = false, length = 50)
-    private String usuarioApellidoPaternno;
+    private String usuarioApellidoPaterno;
 
     @Column(name = "usuario_apellido_materno", nullable = false, length = 50)
     private String usuarioApellidoMaterno;
@@ -34,9 +35,11 @@ public class Usuario {
     private String usuarioTelefono;
 
     @Column(name = "usuario_fecha_registro", nullable = false, updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime usuarioFechaRegistro;
 
     @Column(name = "usuario_fecha_actualizacion", nullable = true)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime usuarioFechaActualizacion;
 
     @ManyToMany
@@ -50,16 +53,30 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long usuarioId, String usuarioNombre, String usuarioApellidoPaternno, String usuarioApellidoMaterno, String usuarioEmail, String usuarioPassword, String usuarioTelefono, LocalDateTime usuarioFechaRegistro, LocalDateTime usuarioFechaActualizacion) {
+    public Usuario(Long usuarioId, String usuarioNombre, String usuarioApellidoPaterno, String usuarioApellidoMaterno, String usuarioEmail, String usuarioPassword, String usuarioTelefono, LocalDateTime usuarioFechaRegistro, LocalDateTime usuarioFechaActualizacion) {
         this.usuarioId = usuarioId;
         this.usuarioNombre = usuarioNombre;
-        this.usuarioApellidoPaternno = usuarioApellidoPaternno;
+        this.usuarioApellidoPaterno = usuarioApellidoPaterno;
         this.usuarioApellidoMaterno = usuarioApellidoMaterno;
         this.usuarioEmail = usuarioEmail;
         this.usuarioPassword = usuarioPassword;
         this.usuarioTelefono = usuarioTelefono;
         this.usuarioFechaRegistro = usuarioFechaRegistro;
         this.usuarioFechaActualizacion = usuarioFechaActualizacion;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Se establece la fecha de registro solo al crear el usuario
+        if(this.usuarioFechaRegistro == null) {
+            this.usuarioFechaRegistro = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        // Se actualiza la fecha de actualización al modificar el usuario
+        this.usuarioFechaActualizacion = LocalDateTime.now();
     }
 
     public Long getUsuarioId() {
@@ -74,12 +91,12 @@ public class Usuario {
         this.usuarioNombre = usuarioNombre;
     }
 
-    public String getUsuarioApellidoPaternno() {
-        return usuarioApellidoPaternno;
+    public String getUsuarioApellidoPaterno() {
+        return usuarioApellidoPaterno;
     }
 
-    public void setUsuarioApellidoPaternno(String usuarioApellidoPaternno) {
-        this.usuarioApellidoPaternno = usuarioApellidoPaternno;
+    public void setUsuarioApellidoPaterno(String usuarioApellidoPaterno) {
+        this.usuarioApellidoPaterno = usuarioApellidoPaterno;
     }
 
     public String getUsuarioApellidoMaterno() {
@@ -143,7 +160,7 @@ public class Usuario {
         final StringBuilder sb = new StringBuilder("Usuario{");
         sb.append("usuarioId=").append(usuarioId);
         sb.append(", usuarioNombre='").append(usuarioNombre).append('\'');
-        sb.append(", usuarioApellidoPaternno='").append(usuarioApellidoPaternno).append('\'');
+        sb.append(", usuarioApellidoPaterno='").append(usuarioApellidoPaterno).append('\'');
         sb.append(", usuarioApellidoMaterno='").append(usuarioApellidoMaterno).append('\'');
         sb.append(", usuarioEmail='").append(usuarioEmail).append('\'');
         sb.append(", usuarioPassword='").append(usuarioPassword).append('\'');

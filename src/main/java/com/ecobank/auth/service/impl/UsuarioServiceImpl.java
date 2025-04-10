@@ -1,6 +1,8 @@
 package com.ecobank.auth.service.impl;
 
+import com.ecobank.auth.model.Rol;
 import com.ecobank.auth.model.Usuario;
+import com.ecobank.auth.repository.RolRepository;
 import com.ecobank.auth.repository.UsuarioRepository;
 import com.ecobank.auth.service.services.UsuarioService;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,11 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final RolRepository rolRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.rolRepository = rolRepository;
     }
 
     @Override
@@ -22,7 +26,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if(usuario.getUsuarioNombre().isEmpty()){
             throw new IllegalArgumentException("El nombre del usuario no puede ser vacio");
         }
-        if (usuario.getUsuarioApellidoPaternno().isEmpty()){
+        if (usuario.getUsuarioApellidoPaterno().isEmpty()){
             throw new IllegalArgumentException("El nombre del usuario no puede ser vacio");
         }
         if (usuario.getUsuarioApellidoMaterno().isEmpty()){
@@ -37,6 +41,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (usuario.getUsuarioTelefono().isEmpty()){
             throw new IllegalArgumentException("El telefono del usuario no puede estar vacio");
         }
+
+        Rol rolCliente = new Rol();
+        rolCliente.setRolNombre("CLIENTE");
+        rolCliente = rolRepository.save(rolCliente);
+        usuario.getRoles().add(rolCliente);
 
         return usuarioRepository.save(usuario);
     }
@@ -72,7 +81,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (nombreUsuario.isEmpty()){
             throw new RuntimeException("el nombre de usuario no puede estar vacio");
         }
-        return usuarioRepository.findByNombreUsuario(nombreUsuario);
+        return usuarioRepository.findByUsuarioNombre(nombreUsuario);
     }
 
     @Override

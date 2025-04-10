@@ -1,6 +1,7 @@
 package com.ecobank.auth.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,9 +21,11 @@ public class Rol {
     private String rolNombre;
 
     @Column(name = "rol_fecha_creacion", nullable = false, updatable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime rolFechaCreacion;
 
     @Column(name = "rol_fecha_actualizacion", nullable = true)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime rolFechaActualizacion;
 
     @ManyToMany
@@ -44,6 +47,20 @@ public class Rol {
         this.rolNombre = rolNombre;
         this.rolFechaCreacion = rolFechaCreacion;
         this.rolFechaActualizacion = rolFechaActualizacion;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Se establece la fecha de registro solo al crear el usuario
+        if(this.rolFechaCreacion == null) {
+            this.rolFechaCreacion = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        // Se actualiza la fecha de actualización al modificar el usuario
+        this.rolFechaActualizacion = LocalDateTime.now();
     }
 
     public Long getRolId() {

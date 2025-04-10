@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/usuarios/")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private UsuarioServiceImpl usuarioServiceImpl;
+    private final UsuarioServiceImpl usuarioServiceImpl;
 
     public UsuarioController(UsuarioServiceImpl usuarioServiceImpl) {
         this.usuarioServiceImpl = usuarioServiceImpl;
@@ -46,8 +46,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<Usuario> findByNombreUsuario(@PathVariable String nombreUsuario){
-        return usuarioServiceImpl.findByNombreUsuario(nombreUsuario)
+    public ResponseEntity<Usuario> findByNombreUsuario(@PathVariable String nombre){
+        return usuarioServiceImpl.findByNombreUsuario(nombre)
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
