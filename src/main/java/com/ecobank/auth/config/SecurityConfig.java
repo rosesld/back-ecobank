@@ -36,17 +36,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                       // .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
+                       // .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/**").permitAll()
 
                         // Roles personalizados
-                        .requestMatchers("/api/vendedor/**").hasRole("VENDEDOR")
-                        .requestMatchers("/api/banco/**").hasRole("CLIENTE_BANCARIO")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                       // .requestMatchers("/api/vendedor/**").hasRole("VENDEDOR")
+                       // .requestMatchers("/api/banco/**").hasRole("CLIENTE_BANCARIO")
+                       // .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+               // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

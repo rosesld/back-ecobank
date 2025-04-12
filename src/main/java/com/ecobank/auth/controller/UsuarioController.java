@@ -19,10 +19,12 @@ public class UsuarioController {
         this.usuarioServiceImpl = usuarioServiceImpl;
     }
 
+    /*
     @PostMapping("/guardar")
     public ResponseEntity<Usuario> saveUsuario(@RequestBody Usuario usuario) {
         return new ResponseEntity<Usuario>(usuarioServiceImpl.saveUsuario(usuario), HttpStatus.CREATED);
     }
+     */
 
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {

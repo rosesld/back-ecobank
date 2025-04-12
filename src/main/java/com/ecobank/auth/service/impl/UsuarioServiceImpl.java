@@ -21,7 +21,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
     }
-
+/*
     @Override
     public Usuario saveUsuario(Usuario usuario) {
         if(usuario.getUsuarioNombre().isEmpty()){
@@ -52,6 +52,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return usuarioRepository.save(usuario);
     }
+
+ */
 
     @Override
     public Usuario updateUsuario(Long id, Usuario usuario) {
@@ -91,4 +93,13 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<Usuario> findAllUsuarios() {
          return usuarioRepository.findAll();
     }
+
+    @Override
+    public Optional<Usuario> findByUsuarioEmail(String email) {
+        if(email == null || email.isEmpty()){
+            throw new IllegalArgumentException("Email no puede estar vacio ");
+        }
+        return usuarioRepository.findByUsuarioEmail(email);
+    }
+
 }

@@ -36,10 +36,14 @@ public class Permiso {
         this.permisoFechaActualizacion = permisoFechaActualizacion;
     }
 
+
     public Long getPermisoId() {
         return permisoId;
     }
 
+    public String getPermisoNombre() {
+        return permisoNombre;
+    }
     public void setPermisoNombre(String permisoNombre) {
         this.permisoNombre = permisoNombre;
     }

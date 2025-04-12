@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UsuarioService {
     // en la interface se declaran los metodos(es un contrato)
     // metodo guardar, guardaremos un Usuario
-    Usuario saveUsuario(Usuario usuario);
+    // Usuario saveUsuario(Usuario usuario);
 
     Usuario updateUsuario(Long id, Usuario usuario);
 
@@ -19,4 +19,6 @@ public interface UsuarioService {
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
 
     List<Usuario> findAllUsuarios();
+
+    Optional<Usuario> findByUsuarioEmail(String email);
 }
