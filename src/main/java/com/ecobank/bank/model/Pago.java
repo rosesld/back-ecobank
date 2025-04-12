@@ -30,27 +30,41 @@ public class Pago {
     @JoinColumn(name = "pedido_id", referencedColumnName = "pedido_id", nullable = false)
     private Pedido pedido;
 
-    //TODO: RELACION CON LA TABLA USUARIO, traer llave foranea
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
-    private Usuario usuario;
-
     //TODO: RELACION CON LA TABLA ESTADO, traer llave foranea
     @ManyToOne
     @JoinColumn(name = "estado_id", referencedColumnName = "estado_id", nullable = false)
     private Estado estado;
 
+    @ManyToOne
+    @JoinColumn(name = "cuenta_bancaria_id", referencedColumnName = "cuenta_id", nullable = false)
+    private CuentaBancaria cuentaBancaria;
+
     public Pago (){}
 
-    public Pago(Long pagoId, BigDecimal pagoMonto, LocalDateTime pagoFecha, LocalDateTime pagoFechaActulizacion) {
+    public Pago(Long pagoId, BigDecimal pagoMonto, LocalDateTime pagoFecha, LocalDateTime pagoFechaActulizacion, Pedido pedido, Estado estado, CuentaBancaria cuentaBancaria) {
         this.pagoId = pagoId;
         this.pagoMonto = pagoMonto;
         this.pagoFecha = pagoFecha;
         this.pagoFechaActulizacion = pagoFechaActulizacion;
+        this.pedido = pedido;
+        this.estado = estado;
+        this.cuentaBancaria = cuentaBancaria;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Se establece la fecha de registro solo al crear el usuario
+        if(this.pagoFecha == null) {
+            this.pagoFecha = LocalDateTime.now();
+        }
     }
 
     public Long getPagoId() {
         return pagoId;
+    }
+
+    public void setPagoId(Long pagoId) {
+        this.pagoId = pagoId;
     }
 
     public BigDecimal getPagoMonto() {
@@ -85,20 +99,20 @@ public class Pago {
         this.pedido = pedido;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Estado getEstado() {
         return estado;
     }
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    public CuentaBancaria getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
     }
 
     @Override
@@ -108,6 +122,9 @@ public class Pago {
         sb.append(", pagoMonto=").append(pagoMonto);
         sb.append(", pagoFecha=").append(pagoFecha);
         sb.append(", pagoFechaActulizacion=").append(pagoFechaActulizacion);
+        sb.append(", pedido=").append(pedido);
+        sb.append(", estado=").append(estado);
+        sb.append(", cuentaBancaria=").append(cuentaBancaria);
         sb.append('}');
         return sb.toString();
     }

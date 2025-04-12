@@ -33,11 +33,11 @@ public class TransaccionBancaria {
     private LocalDateTime fechaActualizacion;
 
     @ManyToOne
-    @JoinColumn(name = "cuenta_origen", referencedColumnName = "cuenta_id", nullable = false)
+    @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "cuenta_id", nullable = false)
     private CuentaBancaria cuentaOrigen;
 
     @ManyToOne
-    @JoinColumn(name = "cuenta_destino", referencedColumnName = "cuenta_id", nullable = false)
+    @JoinColumn(name = "cuenta_destino_id", referencedColumnName = "cuenta_id", nullable = false)
     private CuentaBancaria cuentaDestino;
 
     @ManyToOne
@@ -52,6 +52,14 @@ public class TransaccionBancaria {
         this.tipoTransaccion = tipoTransaccion;
         this.fechaTransaccion = fechaTransaccion;
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        // Se establece la fecha de registro solo al crear el usuario
+        if(this.fechaTransaccion == null) {
+            this.fechaTransaccion = LocalDateTime.now();
+        }
     }
 
     public Long getTransaccionId() {
