@@ -1,5 +1,6 @@
 package com.ecobank.auth.service.impl;
 
+import com.ecobank.auth.dto.RegistroClienteDTO;
 import com.ecobank.auth.dto.RegistroVendedorDTO;
 import com.ecobank.auth.model.Rol;
 import com.ecobank.auth.model.Usuario;
@@ -59,6 +60,34 @@ public class RegistroUsuarioService implements RegistroUsuario {
 
         vendedorRepository.save(vendedor);
         return usuarioGuardado;
+    }
+
+    public Usuario registroCliente(RegistroClienteDTO registroClienteDTO){
+        if(usuarioRepository.existsByUsuarioEmail(registroClienteDTO.getEmail())){
+            throw new IllegalArgumentException("El correo ya esta registrado");
+        }
+
+        Rol rolCliente = rolRepository.findByRolNombre("CLIENTE");
+        if(rolCliente == null) {
+            throw new IllegalArgumentException("ROL CLIENTE no existe en la base de datos");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setUsuarioNombre(registroClienteDTO.getNombre());
+        usuario.setUsuarioApellidoPaterno(registroClienteDTO.getApellidoPaterno());
+        usuario.setUsuarioApellidoMaterno(registroClienteDTO.getApellidoMaterno());
+        usuario.setUsuarioEmail(registroClienteDTO.getEmail());
+        usuario.setUsuarioTelefono(registroClienteDTO.getTelefono());
+
+        if(registroClienteDTO.getPassword() == null || registroClienteDTO.getPassword().isBlank()){
+            throw new IllegalArgumentException("El password no puede estar vacio");
+        }
+
+        usuario.setUsuarioPassword(passwordEncoder.encode(registroClienteDTO.getPassword()));
+
+        usuario.getRoles().add(rolCliente);
+
+        return usuarioRepository.save(usuario);
     }
 
 }

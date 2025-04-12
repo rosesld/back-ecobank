@@ -1,5 +1,6 @@
 package com.ecobank.auth.controller;
 
+import com.ecobank.auth.dto.RegistroClienteDTO;
 import com.ecobank.auth.dto.RegistroVendedorDTO;
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.service.impl.RegistroUsuarioService;
@@ -23,6 +24,12 @@ public class RegistroController {
     @PostMapping("/registro-vendedor")
     public ResponseEntity<?> registrarVendedor(@RequestBody RegistroVendedorDTO registroVendedorDTO) {
         Usuario usuario = registroUsuarioService.registrarVendedor(registroVendedorDTO);
+        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registro-cliente")
+    public ResponseEntity<Usuario> registrarCliente(@RequestBody RegistroClienteDTO registroClienteDTO){
+        Usuario usuario = registroUsuarioService.registroCliente((registroClienteDTO));
         return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 
