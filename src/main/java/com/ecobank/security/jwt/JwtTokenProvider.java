@@ -18,7 +18,22 @@ public class JwtTokenProvider {
 
     private final String jwtSecret = "clave_super_segura_123456789_ecobank";
     private final long jwtExpirationInMinutes = 86400000;
-    private final Key jwtSecretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    private final Key jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+    /*
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration}")
+    private long jwtExpirationInMillis;
+
+    private Key jwtSecretKey;
+
+    @PostConstruct
+    public void init() {
+        jwtSecretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+    */
 
     public String generarToken(Authentication authentication) {
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
