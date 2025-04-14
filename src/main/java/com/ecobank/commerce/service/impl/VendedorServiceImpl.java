@@ -13,6 +13,8 @@ import com.ecobank.bank.repository.CuentaBancariaRepository;
 import com.ecobank.bank.repository.EstadoRepository;
 import com.ecobank.bank.service.impl.EstadoServiceImpl;
 import com.ecobank.commerce.dto.RegistroVendedorDTO;
+import com.ecobank.commerce.dto.RegistroVendedorResponse;
+import com.ecobank.commerce.mapper.VendedorMapper;
 import com.ecobank.commerce.model.Vendedor;
 import com.ecobank.commerce.repository.VendedorRepository;
 import com.ecobank.commerce.service.services.VendedorService;
@@ -49,12 +51,11 @@ public class VendedorServiceImpl implements VendedorService {
 
     @Override
     @Transactional
-    public Usuario registrarVendedor(RegistroVendedorDTO dto) {
+    public RegistroVendedorResponse registrarVendedor(RegistroVendedorDTO dto) {
         if (vendedorRepository.existsByUsuarioUsuarioEmail(dto.getEmail())) {
             throw new IllegalArgumentException("El email ya existe en la base de datos");
         }
 
-        // 1. Crear Usuario
         Usuario usuario = new Usuario();
         usuario.setUsuarioNombre(dto.getNombre());
         usuario.setUsuarioApellidoPaterno(dto.getApellidoPaterno());
@@ -69,14 +70,12 @@ public class VendedorServiceImpl implements VendedorService {
 
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
-        // 2. Crear Vendedor
         Vendedor vendedor = new Vendedor();
         vendedor.setVendedorRutPyme(dto.getRutPyme());
         vendedor.setVendedorRazonSocial(dto.getRazonSocial());
         vendedor.setUsuario(usuarioGuardado);
         vendedorRepository.save(vendedor);
 
-        // 3. Crear y guardar CuentaBancaria (aÃºn sin ClienteBancario)
         String numeroCuenta = "1818" + dto.getRutPyme().replace("-", "");
         Estado estadoActivo = estadoServiceImpl.obtenerEstadoActivo();
 
@@ -94,14 +93,13 @@ public class VendedorServiceImpl implements VendedorService {
 
         CuentaBancaria cuentaGuardada = cuentaBancariaRepository.save(cuentaBancaria);
 
-        // 4. Crear ClienteBancario con la cuenta ya guardada
         ClienteBancario clienteBancario = new ClienteBancario();
         clienteBancario.setUsuario(usuarioGuardado);
         clienteBancario.setCuentaBancaria(cuentaGuardada);
 
         clienteBancarioRepository.save(clienteBancario);
 
-        return usuarioGuardado;
+        return VendedorMapper.toDto(usuarioGuardado, vendedor, cuentaGuardada);
     }
 
 }

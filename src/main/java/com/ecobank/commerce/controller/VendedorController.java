@@ -2,7 +2,7 @@ package com.ecobank.commerce.controller;
 
 import com.ecobank.commerce.dto.RegistroVendedorDTO;
 import com.ecobank.auth.model.Usuario;
-import com.ecobank.commerce.model.Vendedor;
+import com.ecobank.commerce.dto.RegistroVendedorResponse;
 import com.ecobank.commerce.service.impl.VendedorServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,8 @@ public class VendedorController {
     }
 
     @PostMapping("/registro-vendedor")
-    public ResponseEntity<?> registrarVendedor(@RequestBody RegistroVendedorDTO registroVendedorDTO) {
-        Usuario usuario = vendedorServiceImpl.registrarVendedor(registroVendedorDTO);
-        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
+    public ResponseEntity<RegistroVendedorResponse> registrarVendedor(@RequestBody RegistroVendedorDTO registroVendedorDTO) {
+        RegistroVendedorResponse response = vendedorServiceImpl.registrarVendedor(registroVendedorDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }
