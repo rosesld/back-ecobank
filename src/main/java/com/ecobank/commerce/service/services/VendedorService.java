@@ -2,11 +2,10 @@ package com.ecobank.commerce.service.services;
 
 import com.ecobank.commerce.dto.RegistroVendedorDTO;
 import com.ecobank.auth.model.Usuario;
+import com.ecobank.commerce.dto.RegistroVendedorResponse;
 
 public interface VendedorService {
 
-    // Guardar un vendedor
-    Usuario registrarVendedor(RegistroVendedorDTO registroVendedorDTO);
-
+    RegistroVendedorResponse registrarVendedor(RegistroVendedorDTO registroVendedorDTO);
 
 }
