@@ -1,8 +1,11 @@
 package com.ecobank.commerce.model;
 
 import com.ecobank.auth.model.Usuario;
+import com.ecobank.bank.model.CuentaBancaria;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.engine.internal.Cascade;
+
 import java.time.LocalDateTime;
 
 
@@ -37,15 +40,20 @@ public class Vendedor {
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
     private Usuario usuario;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cuenta_bancaria_id")
+    private CuentaBancaria cuentaBancaria;
+
     public Vendedor(){}
 
-    public Vendedor(Long vendedorId, String vendedorRutPyme, String vendedorRazonSocial, String vendedorRepresentante, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion) {
+    public Vendedor(Long vendedorId, String vendedorRutPyme, String vendedorRazonSocial, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion, Usuario usuario, CuentaBancaria cuentaBancaria) {
         this.vendedorId = vendedorId;
         this.vendedorRutPyme = vendedorRutPyme;
         this.vendedorRazonSocial = vendedorRazonSocial;
-        //this.vendedorRepresentante = vendedorRepresentante;
         this.fechaRegistro = fechaRegistro;
         this.fechaActualizacion = fechaActualizacion;
+        this.usuario = usuario;
+        this.cuentaBancaria = cuentaBancaria;
     }
 
     @PrePersist
@@ -114,15 +122,24 @@ public class Vendedor {
         this.usuario = usuario;
     }
 
+    public CuentaBancaria getCuentaBancaria() {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria(CuentaBancaria cuentaBancaria) {
+        this.cuentaBancaria = cuentaBancaria;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Vendedor{");
         sb.append("vendedorId=").append(vendedorId);
         sb.append(", vendedorRutPyme='").append(vendedorRutPyme).append('\'');
         sb.append(", vendedorRazonSocial='").append(vendedorRazonSocial).append('\'');
-       // sb.append(", vendedorRepresentante='").append(vendedorRepresentante).append('\'');
         sb.append(", fechaRegistro=").append(fechaRegistro);
         sb.append(", fechaActualizacion=").append(fechaActualizacion);
+        sb.append(", usuario=").append(usuario);
+        sb.append(", cuentaBancaria=").append(cuentaBancaria);
         sb.append('}');
         return sb.toString();
     }

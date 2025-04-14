@@ -1,5 +1,7 @@
 package com.ecobank.commerce.controller;
 
+import com.ecobank.commerce.dto.RegistroVendedorDTO;
+import com.ecobank.auth.model.Usuario;
 import com.ecobank.commerce.model.Vendedor;
 import com.ecobank.commerce.service.impl.VendedorServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,14 @@ public class VendedorController {
 
     private final VendedorServiceImpl vendedorServiceImpl;
 
+
     public VendedorController(VendedorServiceImpl vendedorServiceImpl) {
         this.vendedorServiceImpl = vendedorServiceImpl;
     }
 
-    @PostMapping("/guardar")
-    public ResponseEntity<Vendedor> saveVendedor(@RequestBody Vendedor vendedor){
-        return new ResponseEntity<Vendedor>(vendedorServiceImpl.saveVendedor(vendedor), HttpStatus.CREATED);
+    @PostMapping("/registro-vendedor")
+    public ResponseEntity<?> registrarVendedor(@RequestBody RegistroVendedorDTO registroVendedorDTO) {
+        Usuario usuario = vendedorServiceImpl.registrarVendedor(registroVendedorDTO);
+        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 }

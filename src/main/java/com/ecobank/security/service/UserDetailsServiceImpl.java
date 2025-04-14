@@ -1,7 +1,8 @@
-package com.ecobank.auth.security;
+package com.ecobank.security.service;
 
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.service.impl.UsuarioServiceImpl;
+import com.ecobank.security.model.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

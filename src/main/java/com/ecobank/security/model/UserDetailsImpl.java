@@ -1,4 +1,4 @@
-package com.ecobank.auth.security;
+package com.ecobank.security.model;
 
 import com.ecobank.auth.model.Usuario;
 import org.springframework.security.core.GrantedAuthority;

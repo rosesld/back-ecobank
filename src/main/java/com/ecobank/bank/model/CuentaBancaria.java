@@ -12,7 +12,7 @@ import java.util.Set;
 public class CuentaBancaria {
 
     @Id
-    @Column(name = "cuenta_id")
+    @Column(name = "cuenta_id", nullable = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cuentaId;
 
@@ -20,7 +20,7 @@ public class CuentaBancaria {
     private BigDecimal saldo;
 
     @Column(name = "numero_cuenta", nullable = false, unique = true)
-    private int numeroDeCuenta;
+    private String numeroDeCuenta;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_cuenta", nullable = false)
@@ -50,7 +50,7 @@ public class CuentaBancaria {
     private Estado estado;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_bancario_id", referencedColumnName = "cliente_bancario_id", nullable = false)
+    @JoinColumn(name = "cliente_bancario_id", referencedColumnName = "cliente_bancario_id", nullable = true)
     private ClienteBancario clienteBancario;
 
     @OneToMany(mappedBy = "cuentaOrigen")
@@ -65,7 +65,7 @@ public class CuentaBancaria {
     public CuentaBancaria() {
     }
 
-    public CuentaBancaria(Long cuentaId, BigDecimal saldo, int numeroDeCuenta, TipoCuentaEnum tipoCuenta, Boolean requiereActivacion, LocalDateTime fechaActivacion, String documentoIdentidad, Boolean telefonoVerificado, LocalDateTime fechaCreacion, Usuario usuario, Estado estado, ClienteBancario clienteBancario, Set<TransaccionBancaria> transaccionesOrigen, Set<TransaccionBancaria> transaccionesDestino, Set<Pago> pagos) {
+    public CuentaBancaria(Long cuentaId, BigDecimal saldo, String numeroDeCuenta, TipoCuentaEnum tipoCuenta, Boolean requiereActivacion, LocalDateTime fechaActivacion, String documentoIdentidad, Boolean telefonoVerificado, LocalDateTime fechaCreacion, Usuario usuario, Estado estado, ClienteBancario clienteBancario, Set<TransaccionBancaria> transaccionesOrigen, Set<TransaccionBancaria> transaccionesDestino, Set<Pago> pagos) {
         this.cuentaId = cuentaId;
         this.saldo = saldo;
         this.numeroDeCuenta = numeroDeCuenta;
@@ -108,11 +108,11 @@ public class CuentaBancaria {
         this.saldo = saldo;
     }
 
-    public int getNumeroDeCuenta() {
+    public String getNumeroDeCuenta() {
         return numeroDeCuenta;
     }
 
-    public void setNumeroDeCuenta(int numeroDeCuenta) {
+    public void setNumeroDeCuenta(String numeroDeCuenta) {
         this.numeroDeCuenta = numeroDeCuenta;
     }
 

@@ -1,4 +1,7 @@
 package com.ecobank.bank.service.services;
 
-public interface EstadoService {
+import com.ecobank.bank.model.Estado;
+
+public interface EstadoService  {
+    Estado obtenerEstadoActivo();
 }

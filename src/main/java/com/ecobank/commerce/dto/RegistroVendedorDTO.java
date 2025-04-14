@@ -1,4 +1,4 @@
-package com.ecobank.auth.dto;
+package com.ecobank.commerce.dto;
 
 public class RegistroVendedorDTO {
 

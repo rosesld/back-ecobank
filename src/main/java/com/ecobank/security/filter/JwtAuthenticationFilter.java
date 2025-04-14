@@ -1,5 +1,7 @@
-package com.ecobank.auth.security;
+package com.ecobank.security.filter;
 
+import com.ecobank.security.jwt.JwtTokenProvider;
+import com.ecobank.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

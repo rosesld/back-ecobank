@@ -1,7 +1,5 @@
 package com.ecobank.auth.service.impl;
 
-import com.ecobank.auth.model.Rol;
-import com.ecobank.auth.model.RolNombre;
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.repository.RolRepository;
 import com.ecobank.auth.repository.UsuarioRepository;
@@ -21,39 +19,6 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
     }
-/*
-    @Override
-    public Usuario saveUsuario(Usuario usuario) {
-        if(usuario.getUsuarioNombre().isEmpty()){
-            throw new IllegalArgumentException("El nombre del usuario no puede ser vacio");
-        }
-        if (usuario.getUsuarioApellidoPaterno().isEmpty()){
-            throw new IllegalArgumentException("El nombre del usuario no puede ser vacio");
-        }
-        if (usuario.getUsuarioApellidoMaterno().isEmpty()){
-            throw new IllegalArgumentException("El nombre del usuario no puede ser vacio");
-        }
-        if (usuario.getUsuarioEmail().isEmpty()){
-            throw new IllegalArgumentException("El email del usuario no puede ser vacio");
-        }
-        if(usuario.getUsuarioPassword().isEmpty()){
-            throw new IllegalArgumentException("El password del usuario no puede ser vacio");
-        }
-        if (usuario.getUsuarioTelefono().isEmpty()){
-            throw new IllegalArgumentException("El telefono del usuario no puede estar vacio");
-        }
-
-
-        Rol rolCliente = rolRepository.findByRolNombre("CLIENTE");
-        if(rolCliente == null) {
-            throw new IllegalArgumentException("El rol no existe");
-        }
-        usuario.getRoles().add(rolCliente);
-
-        return usuarioRepository.save(usuario);
-    }
-
- */
 
     @Override
     public Usuario updateUsuario(Long id, Usuario usuario) {

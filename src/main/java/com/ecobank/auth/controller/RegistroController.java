@@ -1,7 +1,6 @@
 package com.ecobank.auth.controller;
 
 import com.ecobank.auth.dto.RegistroClienteDTO;
-import com.ecobank.auth.dto.RegistroVendedorDTO;
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.service.impl.RegistroUsuarioService;
 import org.springframework.http.HttpStatus;
@@ -19,12 +18,6 @@ public class RegistroController {
 
     public RegistroController(RegistroUsuarioService registroUsuarioService) {
         this.registroUsuarioService = registroUsuarioService;
-    }
-
-    @PostMapping("/registro-vendedor")
-    public ResponseEntity<?> registrarVendedor(@RequestBody RegistroVendedorDTO registroVendedorDTO) {
-        Usuario usuario = registroUsuarioService.registrarVendedor(registroVendedorDTO);
-        return new ResponseEntity<>(usuario, HttpStatus.CREATED);
     }
 
     @PostMapping("/registro-cliente")

@@ -1,6 +1,6 @@
-package com.ecobank.auth.security;
+package com.ecobank.security.jwt;
 
-import com.ecobank.auth.model.Usuario;
+import com.ecobank.security.model.UserDetailsImpl;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
