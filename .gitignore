@@ -34,3 +34,5 @@ build/
 
 ### application.properties ###
 /src/main/resources/*.properties
+
+/src/main/resources/static/*
