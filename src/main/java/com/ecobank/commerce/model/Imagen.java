@@ -16,8 +16,13 @@ public class Imagen {
     @Column(name = "imagen_url", nullable = false)
     private String imagenUrl;
 
-    @Column(name = "imagen_fecha", nullable = false, updatable = true)
+    @Column(name = "imagen_fecha", nullable = false, updatable = false)
     private LocalDateTime imagenFecha;
+
+    @PrePersist
+    public void asignarFechaCreacion() {
+        this.imagenFecha = LocalDateTime.now();
+    }
 
     @ManyToOne
     @JoinColumn(name = "producto_id", referencedColumnName = "producto_id", nullable = false)
