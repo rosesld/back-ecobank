@@ -15,6 +15,9 @@ public class ClienteBancario {
     @Column(name = "cliente_bancario_id")
     private Long clienteBancarioId;
 
+    @Column(name = "rut_cliente_bancario")
+    private String rutClienteBancario;
+
     @Column(name = "cliente_bancario_fecha_registro", updatable = false)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaRegistro;
@@ -34,8 +37,9 @@ public class ClienteBancario {
     public ClienteBancario() {
     }
 
-    public ClienteBancario(Long clienteBancarioId, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion, Usuario usuario, CuentaBancaria cuentaBancaria) {
+    public ClienteBancario(Long clienteBancarioId, String rutClienteBancario, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion, Usuario usuario, CuentaBancaria cuentaBancaria) {
         this.clienteBancarioId = clienteBancarioId;
+        this.rutClienteBancario = rutClienteBancario;
         this.fechaRegistro = fechaRegistro;
         this.fechaActualizacion = fechaActualizacion;
         this.usuario = usuario;
@@ -60,8 +64,12 @@ public class ClienteBancario {
         return clienteBancarioId;
     }
 
-    public void setClienteBancarioId(Long clienteBancarioId) {
-        this.clienteBancarioId = clienteBancarioId;
+    public String getRutClienteBancario() {
+        return rutClienteBancario;
+    }
+
+    public void setRutClienteBancario(String rutClienteBancario) {
+        this.rutClienteBancario = rutClienteBancario;
     }
 
     public LocalDateTime getFechaRegistro() {
@@ -100,6 +108,7 @@ public class ClienteBancario {
     public String toString() {
         final StringBuilder sb = new StringBuilder("ClienteBancario{");
         sb.append("clienteBancarioId=").append(clienteBancarioId);
+        sb.append(", rutClienteBancario='").append(rutClienteBancario);
         sb.append(", fechaRegistro=").append(fechaRegistro);
         sb.append(", fechaActualizacion=").append(fechaActualizacion);
         sb.append(", usuario=").append(usuario);
