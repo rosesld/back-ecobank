@@ -2,7 +2,7 @@ package com.ecobank.bank.mapper;
 
 
 import com.ecobank.auth.model.Usuario;
-import com.ecobank.bank.dto.RegistroClienteBancarioResponse;
+import com.ecobank.bank.dto.response.RegistroClienteBancarioResponse;
 import com.ecobank.bank.model.CuentaBancaria;
 import org.springframework.stereotype.Component;
 

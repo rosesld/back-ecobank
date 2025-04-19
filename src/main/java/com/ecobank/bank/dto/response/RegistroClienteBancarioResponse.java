@@ -1,7 +1,6 @@
-package com.ecobank.bank.dto;
+package com.ecobank.bank.dto.response;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class RegistroClienteBancarioResponse {

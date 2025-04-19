@@ -1,4 +1,4 @@
-package com.ecobank.bank.dto;
+package com.ecobank.bank.dto.request;
 
 public class RegistroClienteBancarioDTO {
 

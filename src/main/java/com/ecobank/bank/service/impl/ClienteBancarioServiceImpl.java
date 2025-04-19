@@ -4,8 +4,8 @@ import com.ecobank.auth.model.Rol;
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.auth.repository.RolRepository;
 import com.ecobank.auth.repository.UsuarioRepository;
-import com.ecobank.bank.dto.RegistroClienteBancarioDTO;
-import com.ecobank.bank.dto.RegistroClienteBancarioResponse;
+import com.ecobank.bank.dto.request.RegistroClienteBancarioDTO;
+import com.ecobank.bank.dto.response.RegistroClienteBancarioResponse;
 import com.ecobank.bank.mapper.ClienteBancarioMapper;
 import com.ecobank.bank.model.ClienteBancario;
 import com.ecobank.bank.model.CuentaBancaria;
@@ -85,6 +85,7 @@ public class ClienteBancarioServiceImpl implements ClienteBancarioService {
         ClienteBancario clienteBancario = new ClienteBancario();
         clienteBancario.setUsuario(usuarioGuardado);
         clienteBancario.setCuentaBancaria(cuentaGuardada);
+        clienteBancario.setRutClienteBancario(registroClienteBancarioDTO.getRutCliente());
 
         clienteBancarioRepository.save(clienteBancario);
 
