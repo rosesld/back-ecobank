@@ -1,8 +1,8 @@
 package com.ecobank.commerce.controller;
 
 
-import com.ecobank.commerce.dto.RegistroProductoDTO;
-import com.ecobank.commerce.dto.RegistroProductoResponse;
+import com.ecobank.commerce.dto.request.RegistroProductoDTO;
+import com.ecobank.commerce.dto.response.RegistroProductoResponse;
 import com.ecobank.commerce.service.impl.ProductoServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

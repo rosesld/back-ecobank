@@ -1,4 +1,4 @@
-package com.ecobank.commerce.dto;
+package com.ecobank.commerce.dto.request;
 
 import com.ecobank.commerce.model.Categoria;
 import com.ecobank.commerce.model.Vendedor;

@@ -2,7 +2,7 @@ package com.ecobank.commerce.mapper;
 
 import com.ecobank.auth.model.Usuario;
 import com.ecobank.bank.model.CuentaBancaria;
-import com.ecobank.commerce.dto.RegistroVendedorResponse;
+import com.ecobank.commerce.dto.response.RegistroVendedorResponse;
 import com.ecobank.commerce.model.Vendedor;
 
 public class VendedorMapper {

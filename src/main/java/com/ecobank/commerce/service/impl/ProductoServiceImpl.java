@@ -1,7 +1,7 @@
 package com.ecobank.commerce.service.impl;
 
-import com.ecobank.commerce.dto.RegistroProductoDTO;
-import com.ecobank.commerce.dto.RegistroProductoResponse;
+import com.ecobank.commerce.dto.request.RegistroProductoDTO;
+import com.ecobank.commerce.dto.response.RegistroProductoResponse;
 import com.ecobank.commerce.mapper.ProductoMapper;
 import com.ecobank.commerce.model.Categoria;
 import com.ecobank.commerce.model.Imagen;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

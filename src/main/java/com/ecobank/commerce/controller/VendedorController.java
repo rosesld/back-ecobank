@@ -1,8 +1,7 @@
 package com.ecobank.commerce.controller;
 
-import com.ecobank.commerce.dto.RegistroVendedorDTO;
-import com.ecobank.auth.model.Usuario;
-import com.ecobank.commerce.dto.RegistroVendedorResponse;
+import com.ecobank.commerce.dto.request.RegistroVendedorDTO;
+import com.ecobank.commerce.dto.response.RegistroVendedorResponse;
 import com.ecobank.commerce.service.impl.VendedorServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

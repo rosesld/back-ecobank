@@ -1,7 +1,7 @@
 package com.ecobank.commerce.mapper;
 
-import com.ecobank.commerce.dto.RegistroProductoDTO;
-import com.ecobank.commerce.dto.RegistroProductoResponse;
+import com.ecobank.commerce.dto.request.RegistroProductoDTO;
+import com.ecobank.commerce.dto.response.RegistroProductoResponse;
 import com.ecobank.commerce.model.Categoria;
 import com.ecobank.commerce.model.Imagen;
 import com.ecobank.commerce.model.Producto;

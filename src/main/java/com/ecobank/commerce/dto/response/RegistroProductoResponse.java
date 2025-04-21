@@ -1,6 +1,4 @@
-package com.ecobank.commerce.dto;
-
-import com.ecobank.commerce.model.Imagen;
+package com.ecobank.commerce.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
