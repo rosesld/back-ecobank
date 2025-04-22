@@ -1,6 +1,7 @@
 package com.ecobank.commerce.service.impl;
 
 import com.ecobank.commerce.dto.request.RegistroProductoDTO;
+import com.ecobank.commerce.dto.response.ProductoPageResponse;
 import com.ecobank.commerce.dto.response.RegistroProductoResponse;
 import com.ecobank.commerce.mapper.ProductoMapper;
 import com.ecobank.commerce.model.Categoria;
@@ -13,6 +14,10 @@ import com.ecobank.commerce.repository.ProductoRepository;
 import com.ecobank.commerce.repository.VendedorRepository;
 import com.ecobank.commerce.service.services.ProductoService;
 import com.ecobank.commerce.util.GuardarArchivoLocalService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -95,98 +100,65 @@ public class ProductoServiceImpl implements ProductoService{
         return ProductoMapper.toDto(productoGuardado, vendedor);
     }
 
-    @Override
-    public List<RegistroProductoResponse> listaProductos() {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() >= 0)
-                .map(producto -> {
-                    RegistroProductoResponse response = new RegistroProductoResponse();
-                    response.setProductoId(producto.getProductoId());
-                    response.setNombreProducto(producto.getProductoNombre());
-                    response.setDescripcionProducto(producto.getProductoDescripcion());
-                    response.setPrecioProducto(producto.getProductoPrecio());
-                    response.setDescuentoProducto(producto.getProductoDescuento());
-                    response.setStockPorducto(producto.getProductoStock());
-                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+    public ProductoPageResponse listaProductosFiltrados(
+            String nombre,
+            BigDecimal precioMin,
+            BigDecimal precioMax,
+            Long categoriaId,
+            int page,
+            int size,
+            String sort
+    ) {
+        // 1. Parseamos el sort dinámico
+        String[] sortParams = sort != null ? sort.split(",") : new String[]{"productoNombre", "asc"};
+        String sortBy = sortParams[0];
+        Sort.Direction direction = (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("desc"))
+                ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
 
-                    List<String> urlsImagenes = producto.getImagenes().stream()
-                            .map(imagen -> imagen.getImagenUrl())
-                            .collect(Collectors.toList());
+        // Validar campos permitidos para evitar errores
+        List<String> camposValidos = List.of("productoNombre", "productoPrecio", "productoFechaCreacion");
+        if (!camposValidos.contains(sortBy)) {
+            sortBy = "productoNombre"; // fallback
+        }
 
-                    response.setUrlsImagenes(urlsImagenes);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-                    if(producto.getVendedor() != null) {
-                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
-                    }
+        // 2. Repositorio: pasamos todos los filtros
+        Page<Producto> productos = productoRepository.buscarConFiltros(nombre, precioMin, precioMax, categoriaId, pageable);
 
-                return  response;
-                })
-                .collect(Collectors.toList());
+        // 3. Mapeamos a la respuesta
+        List<RegistroProductoResponse> items = productos.map(producto -> {
+            RegistroProductoResponse response = new RegistroProductoResponse();
+            response.setProductoId(producto.getProductoId());
+            response.setNombreProducto(producto.getProductoNombre());
+            response.setDescripcionProducto(producto.getProductoDescripcion());
+            response.setPrecioProducto(producto.getProductoPrecio());
+            response.setDescuentoProducto(producto.getProductoDescuento());
+            response.setStockPorducto(producto.getProductoStock());
+            response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+
+            List<String> urlsImagenes = producto.getImagenes().stream()
+                    .map(Imagen::getImagenUrl)
+                    .collect(Collectors.toList());
+            response.setUrlsImagenes(urlsImagenes);
+
+            if (producto.getVendedor() != null) {
+                response.setNombrePyme(producto.getVendedor().getNombrePyme());
+            }
+
+            return response;
+        }).getContent(); // getContent() para obtener los productos reales
+
+        // 4. Crear y devolver la respuesta con paginación
+        ProductoPageResponse pageResponse = new ProductoPageResponse(
+                productos.getTotalElements(),
+                productos.getTotalPages(),
+                productos.getNumber(),
+                items
+        );
+
+        return pageResponse;
     }
 
-    @Override
-    public List<RegistroProductoResponse> buscarProductoPorNombre(String nombreProducto) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() >= 0)
-                .filter(producto -> producto.getProductoNombre() != null &&
-                        producto.getProductoNombre().toLowerCase().contains(nombreProducto.toLowerCase()))
-                .map(producto -> {
-                    RegistroProductoResponse response = new RegistroProductoResponse();
-                    response.setProductoId(producto.getProductoId());
-                    response.setNombreProducto(producto.getProductoNombre());
-                    response.setDescripcionProducto(producto.getProductoDescripcion());
-                    response.setPrecioProducto(producto.getProductoPrecio());
-                    response.setDescuentoProducto(producto.getProductoDescuento());
-                    response.setStockPorducto(producto.getProductoStock());
-                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
-
-                    List<String> urlsImagenes = producto.getImagenes().stream()
-                            .map(imagen -> imagen.getImagenUrl())
-                            .collect(Collectors.toList());
-
-                    response.setUrlsImagenes(urlsImagenes);
-
-                    if(producto.getVendedor() != null) {
-                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
-                    }
-
-                    return  response;
-                })
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<RegistroProductoResponse> buscarPorPrecio(BigDecimal min, BigDecimal max) {
-        return productoRepository.findAll().stream()
-                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() > 0)
-                .filter(producto -> {
-                    BigDecimal precio = producto.getProductoPrecio();
-                    return precio != null &&
-                            (min == null || precio.compareTo(min) >= 0) &&
-                            (max == null || precio.compareTo(max) <= 0);
-                })
-                .map(producto -> {
-                    RegistroProductoResponse response = new RegistroProductoResponse();
-                    response.setProductoId(producto.getProductoId());
-                    response.setNombreProducto(producto.getProductoNombre());
-                    response.setDescripcionProducto(producto.getProductoDescripcion());
-                    response.setPrecioProducto(producto.getProductoPrecio());
-                    response.setDescuentoProducto(producto.getProductoDescuento());
-                    response.setStockPorducto(producto.getProductoStock());
-                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
-
-                    List<String> urlsImagenes = producto.getImagenes().stream()
-                            .map(imagen -> imagen.getImagenUrl())
-                            .collect(Collectors.toList());
-
-                    response.setUrlsImagenes(urlsImagenes);
-
-                    if (producto.getVendedor() != null) {
-                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
-                    }
-
-                    return response;
-                })
-                .collect(Collectors.toList());
-    }
 }

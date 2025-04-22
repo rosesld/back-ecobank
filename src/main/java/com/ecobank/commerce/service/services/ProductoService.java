@@ -11,7 +11,4 @@ import java.util.List;
 public interface ProductoService {
 
     RegistroProductoResponse saveProducto(RegistroProductoDTO dto, List<MultipartFile> archivos);
-    List<RegistroProductoResponse> listaProductos();
-    List<RegistroProductoResponse> buscarProductoPorNombre(String nombreProducto);
-    List<RegistroProductoResponse> buscarPorPrecio(BigDecimal min, BigDecimal max);
 }
