@@ -18,14 +18,17 @@ public class Vendedor {
     @Column(name = "vendedor_id")
     private Long vendedorId;
 
-    @Column(name = "vendedor_rut_pyme")
+    @Column(name = "vendedor_rut_pyme", nullable = false)
     private String vendedorRutPyme;
+
+    @Column(name = "nombre_pyme", nullable = false)
+    private String nombrePyme;
+
+    @Column(name = "descripcion_pyme")
+    private String descripcionPyme;
 
     @Column(name = "vendedor_razon_social")
     private String vendedorRazonSocial;
-
-    //@Column(name = "vendedor_representante")
-    //private String vendedorRepresentante;
 
     @Column(name = "vendedor_fecha_registro", updatable = false)
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
@@ -46,9 +49,11 @@ public class Vendedor {
 
     public Vendedor(){}
 
-    public Vendedor(Long vendedorId, String vendedorRutPyme, String vendedorRazonSocial, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion, Usuario usuario, CuentaBancaria cuentaBancaria) {
+    public Vendedor(Long vendedorId, String vendedorRutPyme, String nombrePyme, String descripcionPyme, String vendedorRazonSocial, LocalDateTime fechaRegistro, LocalDateTime fechaActualizacion, Usuario usuario, CuentaBancaria cuentaBancaria) {
         this.vendedorId = vendedorId;
         this.vendedorRutPyme = vendedorRutPyme;
+        this.nombrePyme = nombrePyme;
+        this.descripcionPyme = descripcionPyme;
         this.vendedorRazonSocial = vendedorRazonSocial;
         this.fechaRegistro = fechaRegistro;
         this.fechaActualizacion = fechaActualizacion;
@@ -90,13 +95,21 @@ public class Vendedor {
         this.vendedorRazonSocial = vendedorRazonSocial;
     }
 
-    /* public String getVendedorRepresentante() {
-        return vendedorRepresentante;
+    public String getNombrePyme() {
+        return nombrePyme;
     }
 
-    public void setVendedorRepresentante(String vendedorRepresentante) {
-        this.vendedorRepresentante = vendedorRepresentante;
-    } */
+    public void setNombrePyme(String nombrePyme) {
+        this.nombrePyme = nombrePyme;
+    }
+
+    public String getDescripcionPyme() {
+        return descripcionPyme;
+    }
+
+    public void setDescripcionPyme(String descripcionPyme) {
+        this.descripcionPyme = descripcionPyme;
+    }
 
     public LocalDateTime getFechaRegistro() {
         return fechaRegistro;
@@ -135,6 +148,8 @@ public class Vendedor {
         final StringBuilder sb = new StringBuilder("Vendedor{");
         sb.append("vendedorId=").append(vendedorId);
         sb.append(", vendedorRutPyme='").append(vendedorRutPyme).append('\'');
+        sb.append(", nombrePyme='").append(nombrePyme).append('\'');
+        sb.append(", descripcionPyme='").append(descripcionPyme).append('\'');
         sb.append(", vendedorRazonSocial='").append(vendedorRazonSocial).append('\'');
         sb.append(", fechaRegistro=").append(fechaRegistro);
         sb.append(", fechaActualizacion=").append(fechaActualizacion);

@@ -16,6 +16,8 @@ public class RegistroProductoResponse {
 
     private List<String> urlsImagenes;
 
+    private String nombrePyme;
+    private String descripcionPyme;
     private String razonSocialVendedor;
 
     public Long getProductoId() {
@@ -80,6 +82,22 @@ public class RegistroProductoResponse {
 
     public void setUrlsImagenes(List<String> urlsImagenes) {
         this.urlsImagenes = urlsImagenes;
+    }
+
+    public String getNombrePyme() {
+        return nombrePyme;
+    }
+
+    public void setNombrePyme(String nombrePyme) {
+        this.nombrePyme = nombrePyme;
+    }
+
+    public String getDescripcionPyme() {
+        return descripcionPyme;
+    }
+
+    public void setDescripcionPyme(String descripcionPyme) {
+        this.descripcionPyme = descripcionPyme;
     }
 
     public String getRazonSocialVendedor() {

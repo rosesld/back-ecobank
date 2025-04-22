@@ -19,7 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductoServiceImpl implements ProductoService{
@@ -93,6 +95,98 @@ public class ProductoServiceImpl implements ProductoService{
         return ProductoMapper.toDto(productoGuardado, vendedor);
     }
 
+    @Override
+    public List<RegistroProductoResponse> listaProductos() {
+        return productoRepository.findAll().stream()
+                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() >= 0)
+                .map(producto -> {
+                    RegistroProductoResponse response = new RegistroProductoResponse();
+                    response.setProductoId(producto.getProductoId());
+                    response.setNombreProducto(producto.getProductoNombre());
+                    response.setDescripcionProducto(producto.getProductoDescripcion());
+                    response.setPrecioProducto(producto.getProductoPrecio());
+                    response.setDescuentoProducto(producto.getProductoDescuento());
+                    response.setStockPorducto(producto.getProductoStock());
+                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
 
+                    List<String> urlsImagenes = producto.getImagenes().stream()
+                            .map(imagen -> imagen.getImagenUrl())
+                            .collect(Collectors.toList());
 
+                    response.setUrlsImagenes(urlsImagenes);
+
+                    if(producto.getVendedor() != null) {
+                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
+                    }
+
+                return  response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RegistroProductoResponse> buscarProductoPorNombre(String nombreProducto) {
+        return productoRepository.findAll().stream()
+                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() >= 0)
+                .filter(producto -> producto.getProductoNombre() != null &&
+                        producto.getProductoNombre().toLowerCase().contains(nombreProducto.toLowerCase()))
+                .map(producto -> {
+                    RegistroProductoResponse response = new RegistroProductoResponse();
+                    response.setProductoId(producto.getProductoId());
+                    response.setNombreProducto(producto.getProductoNombre());
+                    response.setDescripcionProducto(producto.getProductoDescripcion());
+                    response.setPrecioProducto(producto.getProductoPrecio());
+                    response.setDescuentoProducto(producto.getProductoDescuento());
+                    response.setStockPorducto(producto.getProductoStock());
+                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+
+                    List<String> urlsImagenes = producto.getImagenes().stream()
+                            .map(imagen -> imagen.getImagenUrl())
+                            .collect(Collectors.toList());
+
+                    response.setUrlsImagenes(urlsImagenes);
+
+                    if(producto.getVendedor() != null) {
+                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
+                    }
+
+                    return  response;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RegistroProductoResponse> buscarPorPrecio(BigDecimal min, BigDecimal max) {
+        return productoRepository.findAll().stream()
+                .filter(producto -> producto.getProductoStock() != null && producto.getProductoStock() > 0)
+                .filter(producto -> {
+                    BigDecimal precio = producto.getProductoPrecio();
+                    return precio != null &&
+                            (min == null || precio.compareTo(min) >= 0) &&
+                            (max == null || precio.compareTo(max) <= 0);
+                })
+                .map(producto -> {
+                    RegistroProductoResponse response = new RegistroProductoResponse();
+                    response.setProductoId(producto.getProductoId());
+                    response.setNombreProducto(producto.getProductoNombre());
+                    response.setDescripcionProducto(producto.getProductoDescripcion());
+                    response.setPrecioProducto(producto.getProductoPrecio());
+                    response.setDescuentoProducto(producto.getProductoDescuento());
+                    response.setStockPorducto(producto.getProductoStock());
+                    response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+
+                    List<String> urlsImagenes = producto.getImagenes().stream()
+                            .map(imagen -> imagen.getImagenUrl())
+                            .collect(Collectors.toList());
+
+                    response.setUrlsImagenes(urlsImagenes);
+
+                    if (producto.getVendedor() != null) {
+                        response.setNombrePyme(producto.getVendedor().getNombrePyme());
+                    }
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+    }
 }
