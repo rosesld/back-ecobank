@@ -3,7 +3,10 @@ package com.ecobank.commerce.model;
 import com.ecobank.auth.model.Usuario;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
@@ -14,11 +17,18 @@ public class Pedido {
     @Column(name = "pedido_id")
     private Long pedidoId;
 
+    @Column(name = "pedido_total", nullable = false, precision = 10, scale = 2)
+    private BigDecimal pedidoTotal;
+
+
     @Column(name = "pedido_fecha", updatable = false)
     private LocalDateTime pedidoFecha;
 
-    @Column(name = "pedido_fecha_actulizacion")
+    @Column(name = "pedido_fecha_actualizacion")
     private LocalDateTime pedidoFechaActualizacion;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetallePedido> detalles = new ArrayList<>();
 
     //TODO: RELACION CON LA TABLA USUARIO, traer llave foranea
     @ManyToOne
@@ -30,16 +40,29 @@ public class Pedido {
     @JoinColumn(name = "direccion_envio_id", referencedColumnName = "direccion_envio_id", nullable = false)
     private DireccionEnvio direccionEnvio;
 
+    @ManyToOne
+    @JoinColumn(name = "estado_pedido_id", referencedColumnName = "estado_pedido_id", nullable = false)
+    private EstadoPedido estadoPedido;
+
     public Pedido (){}
 
-    public Pedido(Long pedidoId, LocalDateTime pedidoFecha, LocalDateTime pedidoFechaActualizacion) {
+    public Pedido(Long pedidoId, BigDecimal pedidoTotal, LocalDateTime pedidoFecha, List<DetallePedido> detalles, EstadoPedido estadoPedido, DireccionEnvio direccionEnvio, Usuario usuario, LocalDateTime pedidoFechaActualizacion) {
         this.pedidoId = pedidoId;
+        this.pedidoTotal = pedidoTotal;
         this.pedidoFecha = pedidoFecha;
+        this.detalles = detalles;
+        this.estadoPedido = estadoPedido;
+        this.direccionEnvio = direccionEnvio;
+        this.usuario = usuario;
         this.pedidoFechaActualizacion = pedidoFechaActualizacion;
     }
 
     public Long getPedidoId() {
         return pedidoId;
+    }
+
+    public void setPedidoId(Long pedidoId) {
+        this.pedidoId = pedidoId;
     }
 
     public LocalDateTime getPedidoFecha() {
@@ -72,6 +95,30 @@ public class Pedido {
 
     public void setDireccionEnvio(DireccionEnvio direccionEnvio) {
         this.direccionEnvio = direccionEnvio;
+    }
+
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+    public EstadoPedido getEstadoPedido() {
+        return estadoPedido;
+    }
+
+    public void setEstadoPedido(EstadoPedido estadoPedido) {
+        this.estadoPedido = estadoPedido;
+    }
+
+    public BigDecimal getPedidoTotal() {
+        return pedidoTotal;
+    }
+
+    public void setPedidoTotal(BigDecimal pedidoTotal) {
+        this.pedidoTotal = pedidoTotal;
     }
 
     @Override

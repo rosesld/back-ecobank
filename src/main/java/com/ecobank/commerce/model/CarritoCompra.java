@@ -14,7 +14,7 @@ public class CarritoCompra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "carrito_compra_id")
-    private Integer carritocompraId;
+    private Long carritocompraId;
 
     @Column(name = "carrito_fecha_creacion", nullable = false)
     private LocalDateTime carritoFechaCreacion;
@@ -33,7 +33,7 @@ public class CarritoCompra {
     public CarritoCompra() {
     }
 
-    public CarritoCompra(Integer carritocompraId, LocalDateTime carritoFechaCreacion, LocalDateTime carritoFechaActualizacion, Usuario usuario, EstadoCarrito estadoCarrito) {
+    public CarritoCompra(Long carritocompraId, LocalDateTime carritoFechaCreacion, LocalDateTime carritoFechaActualizacion, Usuario usuario, EstadoCarrito estadoCarrito) {
         this.carritocompraId = carritocompraId;
         this.carritoFechaCreacion = carritoFechaCreacion;
         this.carritoFechaActualizacion = carritoFechaActualizacion;
@@ -41,11 +41,11 @@ public class CarritoCompra {
         this.estadoCarrito = estadoCarrito;
     }
 
-    public Integer getCarritocompraId() {
+    public Long getCarritocompraId() {
         return carritocompraId;
     }
 
-    public void setCarritocompraId(Integer carritocompraId) {
+    public void setCarritocompraId(Long carritocompraId) {
         this.carritocompraId = carritocompraId;
     }
 

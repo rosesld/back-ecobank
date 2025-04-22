@@ -50,4 +50,11 @@ public class CarritoMapper {
                 subtotal
         );
     }
+
+    public List<CarritoProductoResponse> toCarritoProductoResponseList(List<CarritoProducto> carritoProductos) {
+        return carritoProductos.stream()
+                .map(this::toCarritoProductoResponse)
+                .collect(Collectors.toList());
+    }
+
 }

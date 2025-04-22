@@ -209,6 +209,4 @@ public class CarritoCompraServiceImpl implements CarritoCompraService {
 
         return carritoMapper.toCarritoResponse(carrito, List.of());
     }
-
-
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class CarritoResponse {
-    private Integer productoId;
+    private Long productoId;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
     private String estado;
@@ -14,7 +14,7 @@ public class CarritoResponse {
 
     public CarritoResponse() {}
 
-    public CarritoResponse(Integer productoId, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion, BigDecimal total, String estado, List<CarritoProductoResponse> productos) {
+    public CarritoResponse(Long productoId, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion, BigDecimal total, String estado, List<CarritoProductoResponse> productos) {
         this.productoId = productoId;
         this.fechaCreacion = fechaCreacion;
         this.fechaActualizacion = fechaActualizacion;
@@ -23,11 +23,11 @@ public class CarritoResponse {
         this.productos = productos;
     }
 
-    public Integer getProductoId() {
+    public Long getProductoId() {
         return productoId;
     }
 
-    public void setProductoId(Integer productoId) {
+    public void setProductoId(Long productoId) {
         this.productoId = productoId;
     }
 

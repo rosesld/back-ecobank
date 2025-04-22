@@ -1,7 +1,9 @@
 package com.ecobank.commerce.controller;
 
 import com.ecobank.commerce.dto.response.CarritoResponse;
+import com.ecobank.commerce.dto.response.CompraResponse;
 import com.ecobank.commerce.service.impl.CarritoCompraServiceImpl;
+import com.ecobank.commerce.service.impl.ConfirmarCompraServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class CarritoController {
 
     private final CarritoCompraServiceImpl carritoService;
+    private final ConfirmarCompraServiceImpl confirmarCompraService;
 
-    public CarritoController(CarritoCompraServiceImpl carritoService) {
+    public CarritoController(CarritoCompraServiceImpl carritoService, ConfirmarCompraServiceImpl confirmarCompraService) {
         this.carritoService = carritoService;
+        this.confirmarCompraService = confirmarCompraService;
     }
 
     @GetMapping("usuario/{usuarioId}")
@@ -57,6 +61,15 @@ public class CarritoController {
     @DeleteMapping("/usuario/{usuarioId}/vaciar")
     public ResponseEntity<CarritoResponse> vaciarCarrito(@PathVariable Long usuarioId){
         CarritoResponse response = carritoService.vaciarCarrito(usuarioId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/usuario/{usuarioId}/confirmar")
+    public ResponseEntity<CompraResponse> confirmarCompra(
+            @PathVariable Long usuarioId,
+            @RequestParam Long direccionEnvio
+    ){
+        CompraResponse response = confirmarCompraService.confirmarCompra(usuarioId, direccionEnvio);
         return ResponseEntity.ok(response);
     }
 }
