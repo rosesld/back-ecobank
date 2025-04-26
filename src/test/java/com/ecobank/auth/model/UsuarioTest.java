@@ -26,6 +26,7 @@ public class UsuarioTest {
 
     // Metodos que aseguran que se estasblescan correctamente las fechas.
     // Simulan lo que hace JPA al guardad la entidad si no viene una fecha, coloca la actual.
+
     @Test
     public void testPrePersistFechaRegistro() {
         assertNull(usuario.getUsuarioFechaRegistro());

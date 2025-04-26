@@ -32,7 +32,7 @@ public class ProductoTest {
         producto.setProductoFechaActualizacion(LocalDateTime.now());
     }
 
-    // Metodo para comprobar que los getter & setter esten funcionando correctamente.
+    // Metodo para comprobar que los getter & setter esten funcionando correctamente
     @Test
     public void testGettersAndSetters() {
         assertEquals("Peluche", producto.getProductoNombre());
