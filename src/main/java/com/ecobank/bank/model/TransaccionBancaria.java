@@ -33,7 +33,7 @@ public class TransaccionBancaria {
     private LocalDateTime fechaActualizacion;
 
     @ManyToOne
-    @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "cuenta_id", nullable = false)
+    @JoinColumn(name = "cuenta_origen_id", referencedColumnName = "cuenta_id", nullable = true)
     private CuentaBancaria cuentaOrigen;
 
     @ManyToOne

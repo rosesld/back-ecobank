@@ -8,43 +8,44 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "Carrito_Compra")
+@Table(name = "Carrito_Compra")
 public class CarritoCompra {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "carrito_compra_id")
-        private Integer carritocompraId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "carrito_compra_id")
+    private Long carritocompraId;
 
-        @Column(name = "carrito_fecha_creacion", nullable = false)
-        private LocalDateTime carritoFechaCreacion;
+    @Column(name = "carrito_fecha_creacion", nullable = false)
+    private LocalDateTime carritoFechaCreacion;
 
-        @Column(name = "carrito_fecha_actualizacion", nullable = false, updatable = true)
-        private LocalDateTime carritoFechaActualizacion;
+    @Column(name = "carrito_fecha_actualizacion", nullable = false, updatable = true)
+    private LocalDateTime carritoFechaActualizacion;
 
-        @ManyToOne
-        @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
-        private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id", nullable = false)
+    private Usuario usuario;
 
-        @ManyToOne
-        @JoinColumn(name = "carrito_estado", referencedColumnName = "estado_id", nullable = false)
-        private Estado estado;
+    @ManyToOne
+    @JoinColumn(name = "estado_carrito_id", referencedColumnName = "estado_carrito_id", nullable = false)
+    private EstadoCarrito estadoCarrito;
 
-        public CarritoCompra() {}
+    public CarritoCompra() {
+    }
 
-    public CarritoCompra(Integer carritocompraId, LocalDateTime carritoFechaCreacion, LocalDateTime carritoFechaActualizacion, Usuario usuario, Estado estado) {
+    public CarritoCompra(Long carritocompraId, LocalDateTime carritoFechaCreacion, LocalDateTime carritoFechaActualizacion, Usuario usuario, EstadoCarrito estadoCarrito) {
         this.carritocompraId = carritocompraId;
         this.carritoFechaCreacion = carritoFechaCreacion;
         this.carritoFechaActualizacion = carritoFechaActualizacion;
         this.usuario = usuario;
-        this.estado = estado;
+        this.estadoCarrito = estadoCarrito;
     }
 
-    public Integer getCarritocompraId() {
+    public Long getCarritocompraId() {
         return carritocompraId;
     }
 
-    public void setCarritocompraId(Integer carritocompraId) {
+    public void setCarritocompraId(Long carritocompraId) {
         this.carritocompraId = carritocompraId;
     }
 
@@ -72,12 +73,12 @@ public class CarritoCompra {
         this.usuario = usuario;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public EstadoCarrito getEstadoCarrito() {
+        return estadoCarrito;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setEstadoCarrito(EstadoCarrito estadoCarrito) {
+        this.estadoCarrito = estadoCarrito;
     }
 
     @Override
@@ -87,7 +88,7 @@ public class CarritoCompra {
         sb.append(", carritoFechaCreacion=").append(carritoFechaCreacion);
         sb.append(", carritoFechaActualizacion=").append(carritoFechaActualizacion);
         sb.append(", usuario=").append(usuario);
-        sb.append(", estado=").append(estado);
+        sb.append(", estadoCarrito=").append(estadoCarrito);
         sb.append('}');
         return sb.toString();
     }

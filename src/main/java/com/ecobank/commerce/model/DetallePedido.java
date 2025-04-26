@@ -36,20 +36,27 @@ public class DetallePedido {
 
     // TODO: Relacion con Estado
     @ManyToOne
-    @JoinColumn(name = "detalles_pedido_estado", referencedColumnName = "estado_id", nullable = false)
-    private Estado detallesPedidoEstado;
+    @JoinColumn(name = "estado_pedido_id", referencedColumnName = "estado_pedido_id", nullable = false)
+    private EstadoPedido estadoPedido;
 
     public DetallePedido(){}
 
-    public DetallePedido(Long detallePedidoId, Integer detallePedidoCantidad, BigDecimal detallePedidoPrecio, LocalDateTime detallePedidoFechaActualizacion) {
-        this.detallePedidoId = detallePedidoId;
+    public DetallePedido(Integer detallePedidoCantidad, LocalDateTime detallePedidoFechaActualizacion, Producto producto, Pedido pedido, EstadoPedido estadoPedido, BigDecimal detallePedidoPrecio, Long detallePedidoId) {
         this.detallePedidoCantidad = detallePedidoCantidad;
-        this.detallePedidoPrecio = detallePedidoPrecio;
         this.detallePedidoFechaActualizacion = detallePedidoFechaActualizacion;
+        this.producto = producto;
+        this.pedido = pedido;
+        this.estadoPedido = estadoPedido;
+        this.detallePedidoPrecio = detallePedidoPrecio;
+        this.detallePedidoId = detallePedidoId;
     }
 
     public Long getDetallePedidoId() {
         return detallePedidoId;
+    }
+
+    public void setDetallePedidoId(Long detallePedidoId) {
+        this.detallePedidoId = detallePedidoId;
     }
 
     public Integer getDetallePedidoCantidad() {
@@ -92,12 +99,12 @@ public class DetallePedido {
         this.producto = producto;
     }
 
-    public Estado getDetallesPedidoEstado() {
-        return detallesPedidoEstado;
+    public EstadoPedido getEstadoPedido() {
+        return estadoPedido;
     }
 
-    public void setDetallesPedidoEstado(Estado detallesPedidoEstado) {
-        this.detallesPedidoEstado = detallesPedidoEstado;
+    public void setEstadoPedido(EstadoPedido estadoPedido) {
+        this.estadoPedido = estadoPedido;
     }
 
     @Override
@@ -107,6 +114,9 @@ public class DetallePedido {
         sb.append(", detallePedidoCantidad=").append(detallePedidoCantidad);
         sb.append(", detallePedidoPrecio=").append(detallePedidoPrecio);
         sb.append(", detallePedidoFechaActualizacion=").append(detallePedidoFechaActualizacion);
+        sb.append(", pedido=").append(pedido);
+        sb.append(", producto=").append(producto);
+        sb.append(", estadoPedido=").append(estadoPedido);
         sb.append('}');
         return sb.toString();
     }

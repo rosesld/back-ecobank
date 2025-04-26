@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -19,7 +21,7 @@ public class Producto {
     @Column(name = "producto_nombre", nullable = false, length = 50)
     private String productoNombre;
 
-    @Column(name = "producto_descripcion", length = 200)
+    @Column(name = "producto_descripcion", nullable = false, length = 200)
     private String productoDescripcion;
 
     @Column(name = "producto_precio", precision = 10, scale = 2)
@@ -36,6 +38,9 @@ public class Producto {
 
     @Column(name = "producto_fecha_actualizacion", nullable = true)
     private LocalDateTime productoFechaActualizacion;
+
+    @OneToMany(mappedBy = "producto")
+    private List<Imagen> imagenes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
@@ -117,6 +122,14 @@ public class Producto {
 
     public void setProductoFechaActualizacion(LocalDateTime productoFechaActualizacion) {
         this.productoFechaActualizacion = productoFechaActualizacion;
+    }
+
+    public List<Imagen> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<Imagen> imagenes) {
+        this.imagenes = imagenes;
     }
 
     public Categoria getCategoria() {

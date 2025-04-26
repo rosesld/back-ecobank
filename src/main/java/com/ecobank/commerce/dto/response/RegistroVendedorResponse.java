@@ -1,4 +1,4 @@
-package com.ecobank.commerce.dto;
+package com.ecobank.commerce.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

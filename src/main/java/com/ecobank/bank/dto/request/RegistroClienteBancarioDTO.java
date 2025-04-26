@@ -1,16 +1,14 @@
-package com.ecobank.commerce.dto;
+package com.ecobank.bank.dto.request;
 
-public class RegistroVendedorDTO {
+public class RegistroClienteBancarioDTO {
 
     private String nombre;
+    private String rutCliente;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String email;
     private String password;
     private String telefono;
-
-    private String rutPyme;
-    private String razonSocial;
 
     public String getNombre() {
         return nombre;
@@ -18,6 +16,14 @@ public class RegistroVendedorDTO {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getRutCliente() {
+        return rutCliente;
+    }
+
+    public void setRutCliente(String rutCliente) {
+        this.rutCliente = rutCliente;
     }
 
     public String getApellidoPaterno() {
@@ -58,21 +64,5 @@ public class RegistroVendedorDTO {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getRutPyme() {
-        return rutPyme;
-    }
-
-    public void setRutPyme(String rutPyme) {
-        this.rutPyme = rutPyme;
-    }
-
-    public String getRazonSocial() {
-        return razonSocial;
-    }
-
-    public void setRazonSocial(String razonSocial) {
-        this.razonSocial = razonSocial;
     }
 }
