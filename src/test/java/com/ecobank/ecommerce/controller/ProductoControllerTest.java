@@ -96,7 +96,7 @@ public class ProductoControllerTest {
         mockResponse.setTotalPages(1);
         mockResponse.setTotalItems(10);
 
-        // Crear lista de productos
+        // Crea lista de productos
         List<RegistroProductoResponse> productos = new ArrayList<>();
         RegistroProductoResponse producto = new RegistroProductoResponse();
         producto.setProductoId(1L);
