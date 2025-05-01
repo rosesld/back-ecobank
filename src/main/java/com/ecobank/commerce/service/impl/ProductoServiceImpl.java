@@ -161,4 +161,31 @@ public class ProductoServiceImpl implements ProductoService{
         return pageResponse;
     }
 
+    public RegistroProductoResponse obtenerProductoPorId(Long id) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        RegistroProductoResponse response = new RegistroProductoResponse();
+        response.setProductoId(producto.getProductoId());
+        response.setNombreProducto(producto.getProductoNombre());
+        response.setDescripcionProducto(producto.getProductoDescripcion());
+        response.setPrecioProducto(producto.getProductoPrecio());
+        response.setDescuentoProducto(producto.getProductoDescuento());
+        response.setStockPorducto(producto.getProductoStock());
+        response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+
+        List<String> urlsImagenes = producto.getImagenes().stream()
+                .map(Imagen::getImagenUrl)
+                .collect(Collectors.toList());
+        response.setUrlsImagenes(urlsImagenes);
+
+        if (producto.getVendedor() != null) {
+            response.setNombrePyme(producto.getVendedor().getNombrePyme());
+            response.setDescripcionPyme(producto.getVendedor().getDescripcionPyme());
+            response.setRazonSocialVendedor(producto.getVendedor().getVendedorRazonSocial());
+        }
+
+        return response;
+    }
+
 }

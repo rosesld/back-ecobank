@@ -73,6 +73,7 @@ public class VendedorServiceImpl implements VendedorService {
         Vendedor vendedor = new Vendedor();
         vendedor.setVendedorRutPyme(dto.getRutPyme());
         vendedor.setVendedorRazonSocial(dto.getRazonSocial());
+        vendedor.setNombrePyme(dto.getNombrePyme());
         vendedor.setUsuario(usuarioGuardado);
         vendedorRepository.save(vendedor);
 

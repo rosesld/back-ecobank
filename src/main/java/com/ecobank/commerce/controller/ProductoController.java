@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +19,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin
 public class ProductoController {
 
     private final ProductoServiceImpl productoServiceImpl;
@@ -27,6 +27,7 @@ public class ProductoController {
         this.productoServiceImpl = productoServiceImpl;
     }
 
+    @PreAuthorize("hasRole('VENDEDOR')")
     @PostMapping(value = "/guardar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<RegistroProductoResponse> crearProducto(@RequestPart("producto") RegistroProductoDTO dto,
                                                                   @RequestPart(value = "imagenes", required = false)List<MultipartFile> imagenes){
@@ -45,6 +46,12 @@ public class ProductoController {
             @RequestParam(defaultValue = "productoNombre,asc") String sort
     ) {
         return productoServiceImpl.listaProductosFiltrados(nombre, precioMin, precioMax, categoriaId, page, size, sort);
+    }
+
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<RegistroProductoResponse> obtenerProductoPorId(@PathVariable Long id) {
+        RegistroProductoResponse producto = productoServiceImpl.obtenerProductoPorId(id);
+        return ResponseEntity.ok(producto);
     }
 
 }

@@ -9,6 +9,7 @@ public class RegistroVendedorDTO {
     private String password;
     private String telefono;
 
+    private String nombrePyme;
     private String rutPyme;
     private String razonSocial;
 
@@ -58,6 +59,14 @@ public class RegistroVendedorDTO {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getNombrePyme() {
+        return nombrePyme;
+    }
+
+    public void setNombrePyme(String nombrePyme) {
+        this.nombrePyme = nombrePyme;
     }
 
     public String getRutPyme() {
