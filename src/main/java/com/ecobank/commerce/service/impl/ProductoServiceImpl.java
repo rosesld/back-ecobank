@@ -49,41 +49,50 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
     @Override
-    public RegistroProductoResponse saveProducto (RegistroProductoDTO registroProductoDTO, List<MultipartFile> archivos){
-        if(registroProductoDTO.getNombreProducto().isEmpty()){
+    public RegistroProductoResponse saveProducto(RegistroProductoDTO registroProductoDTO, List<MultipartFile> archivos, Long usuarioId) {
+
+        // Validaciones de campos
+        if (registroProductoDTO.getNombreProducto().isEmpty()) {
             throw new IllegalArgumentException("El campo nombre no debe estar vacío");
         }
-        if(registroProductoDTO.getDescripcionProducto().isEmpty()){
+        if (registroProductoDTO.getDescripcionProducto().isEmpty()) {
             throw new IllegalArgumentException("El campo descripcion no puede estar vacío");
         }
-        if(registroProductoDTO.getPrecioProducto() == null){
+        if (registroProductoDTO.getPrecioProducto() == null) {
             throw new IllegalArgumentException("El precio NO debe venir vacío");
         }
-        if(registroProductoDTO.getPrecioProducto().compareTo(BigDecimal.ZERO) < 0){
+        if (registroProductoDTO.getPrecioProducto().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("El precio debe ser mayor a 0");
         }
-        if(registroProductoDTO.getStockProducto() < 0){
+        if (registroProductoDTO.getStockProducto() < 0) {
             throw new IllegalArgumentException("El stock NO puede ser menor a 0");
         }
-        if(registroProductoDTO.getStockProducto() == null){
+        if (registroProductoDTO.getStockProducto() == null) {
             throw new IllegalArgumentException("El stock NO debe venir vacío");
         }
-        if(registroProductoDTO.getDescuentoProducto().compareTo(BigDecimal.ZERO) < 0){
+        if (registroProductoDTO.getDescuentoProducto().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("El descuento debe ser mayor a 0");
         }
 
-        Long usuarioId = jwtUtils.getUsuarioIdDesdeToken();
-
+        // Obtener el vendedor asociado al usuarioId
         Optional<Vendedor> vendedorOptional = vendedorRepository.findByUsuarioUsuarioId(usuarioId);
+        if (!vendedorOptional.isPresent()) {
+            throw new IllegalArgumentException("El vendedor asociado al usuario no existe");
+        }
 
+        // Obtener la categoría asociada al producto
         Optional<Categoria> categoriaOptional = categoriaRepository.findById(registroProductoDTO.getCategoriaId());
-        if(!categoriaOptional.isPresent()){
-            throw new IllegalArgumentException("La categoria asociada no existe");
+        if (!categoriaOptional.isPresent()) {
+            throw new IllegalArgumentException("La categoría asociada no existe");
         }
 
         Categoria categoria = categoriaOptional.get();
         Vendedor vendedor = vendedorOptional.get();
+
+        // Crear el producto a partir del DTO y el vendedor y categoría obtenidos
         Producto producto = ProductoMapper.toEntity(registroProductoDTO, vendedor, categoria);
+
+        // Guardar el producto en la base de datos
         Producto productoGuardado = productoRepository.save(producto);
 
         // Subir imágenes
@@ -96,12 +105,15 @@ public class ProductoServiceImpl implements ProductoService{
             imagenes.add(img);
         }
 
+        // Guardar las imágenes en la base de datos
         imagenRepository.saveAll(imagenes);
+
+        // Asignar las imágenes al producto guardado
         productoGuardado.setImagenes(imagenes);
 
+        // Retornar el producto guardado mapeado a DTO
         return ProductoMapper.toDto(productoGuardado, vendedor);
     }
-
     public ProductoPageResponse listaProductosFiltrados(
             String nombre,
             BigDecimal precioMin,

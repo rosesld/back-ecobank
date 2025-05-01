@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface ProductoService {
 
-    RegistroProductoResponse saveProducto(RegistroProductoDTO dto, List<MultipartFile> archivos);
+    RegistroProductoResponse saveProducto(RegistroProductoDTO dto, List<MultipartFile> archivos, Long usuarioId);
 }
