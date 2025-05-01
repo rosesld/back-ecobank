@@ -46,11 +46,19 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/vendedor/registro-vendedor").permitAll()
 
-                        // Roles personalizados
-                       .requestMatchers("/api/vendedor/**").hasAuthority("VENDEDOR")
-                       .requestMatchers("/api/banco/**").hasRole("CLIENTE_BANCARIO")
-                       .requestMatchers("/api/usuarios/**").hasRole("CLIENTE")
+                        // Otras rutas públicas
+                        .requestMatchers(HttpMethod.GET, "/api/productos/filtrados-productos").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/productos/productos/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categorias/all").permitAll()
 
+                        .requestMatchers(HttpMethod.POST, "/api/productos/guardar").hasAuthority("VENDEDOR")
+
+                        // Importante: el orden importa. Esta línea se aplica a cualquier otra ruta de vendedor
+                        .requestMatchers("/api/vendedor/**").hasAuthority("VENDEDOR")
+                        .requestMatchers("/api/banco/**").hasRole("CLIENTE_BANCARIO")
+                        .requestMatchers("/api/usuarios/**").hasRole("CLIENTE")
+
+                        // Todo lo demás requiere autenticación
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

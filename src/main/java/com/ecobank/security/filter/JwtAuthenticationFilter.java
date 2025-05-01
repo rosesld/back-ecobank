@@ -14,10 +14,20 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
+
+    // Rutas que no deben pasar por el filtro
+    private static final List<String> EXCLUDED_PATHS = List.of(
+            "/api/auth/login",
+            "/api/vendedor/registro-vendedor",
+            "/api/productos/filtrados-productos",
+            "/api/productos/productos"
+    );
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsServiceImpl userDetailsService) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -29,6 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        // Si la ruta es pública, no hacemos nada
+        if (EXCLUDED_PATHS.stream().anyMatch(path::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Procesamos token solo si hay uno válido
         String token = getTokenFromRequest(request);
 
         if (StringUtils.hasText(token) && jwtTokenProvider.validarToken(token)) {
