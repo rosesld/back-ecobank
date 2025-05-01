@@ -14,6 +14,7 @@ import com.ecobank.commerce.repository.ProductoRepository;
 import com.ecobank.commerce.repository.VendedorRepository;
 import com.ecobank.commerce.service.services.ProductoService;
 import com.ecobank.commerce.util.GuardarArchivoLocalService;
+import com.ecobank.security.utils.JwtUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,13 +37,15 @@ public class ProductoServiceImpl implements ProductoService{
     private final ImagenRepository imagenRepository;
     private final GuardarArchivoLocalService guardarArchivoLocalService;
     private final CategoriaRepository categoriaRepository;
+    private final JwtUtils jwtUtils;
 
-    public ProductoServiceImpl(ProductoRepository productoRepository, VendedorRepository vendedorRepository, ImagenRepository imagenRepository, GuardarArchivoLocalService guardarArchivoLocalService, CategoriaRepository categoriaRepository) {
+    public ProductoServiceImpl(ProductoRepository productoRepository, VendedorRepository vendedorRepository, ImagenRepository imagenRepository, GuardarArchivoLocalService guardarArchivoLocalService, CategoriaRepository categoriaRepository, JwtUtils jwtUtils) {
         this.productoRepository = productoRepository;
         this.vendedorRepository = vendedorRepository;
         this.imagenRepository = imagenRepository;
         this.guardarArchivoLocalService = guardarArchivoLocalService;
         this.categoriaRepository = categoriaRepository;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
@@ -69,12 +72,14 @@ public class ProductoServiceImpl implements ProductoService{
             throw new IllegalArgumentException("El descuento debe ser mayor a 0");
         }
 
-        Optional<Vendedor> vendedorOptional = vendedorRepository.findById(registroProductoDTO.getVendedor().getVendedorId());
-        if(!vendedorOptional.isPresent()){
+        Long usuarioId = jwtUtils.getUsuarioIdDesdeToken();
+
+        Optional<Vendedor> vendedorOptional = vendedorRepository.findById(usuarioId);
+        if (!vendedorOptional.isPresent()) {
             throw new IllegalArgumentException("El vendedor asociado no existe");
         }
 
-        Optional<Categoria> categoriaOptional = categoriaRepository.findById(registroProductoDTO.getCategoria().getCategoriaId());
+        Optional<Categoria> categoriaOptional = categoriaRepository.findById(registroProductoDTO.getCategoriaId());
         if(!categoriaOptional.isPresent()){
             throw new IllegalArgumentException("La categoria asociada no existe");
         }
@@ -135,7 +140,7 @@ public class ProductoServiceImpl implements ProductoService{
             response.setDescripcionProducto(producto.getProductoDescripcion());
             response.setPrecioProducto(producto.getProductoPrecio());
             response.setDescuentoProducto(producto.getProductoDescuento());
-            response.setStockPorducto(producto.getProductoStock());
+            response.setStockProducto(producto.getProductoStock());
             response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
 
             List<String> urlsImagenes = producto.getImagenes().stream()
@@ -171,7 +176,7 @@ public class ProductoServiceImpl implements ProductoService{
         response.setDescripcionProducto(producto.getProductoDescripcion());
         response.setPrecioProducto(producto.getProductoPrecio());
         response.setDescuentoProducto(producto.getProductoDescuento());
-        response.setStockPorducto(producto.getProductoStock());
+        response.setStockProducto(producto.getProductoStock());
         response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
 
         List<String> urlsImagenes = producto.getImagenes().stream()

@@ -33,9 +33,9 @@ public class ProductoMapper {
 
         dto.setDescripcionProducto(producto.getProductoDescripcion());
         dto.setPrecioProducto(producto.getProductoPrecio());
-        dto.setStockPorducto(producto.getProductoStock());
+        dto.setStockProducto(producto.getProductoStock());
         dto.setDescuentoProducto(producto.getProductoDescuento());
-        dto.setFechaCreacionProducto(LocalDateTime.now());
+        dto.setFechaCreacionProducto(producto.getProductoFechaCreacion());
         dto.setRazonSocialVendedor(vendedor.getVendedorRazonSocial());
 
         List<String> urls = producto.getImagenes().stream()

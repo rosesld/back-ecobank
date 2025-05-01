@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 //JwtUtils - simil
 
@@ -41,6 +42,9 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
                 .claim("usuarioId", userPrincipal.getId())
+                .claim("roles", userPrincipal.getAuthorities().stream()
+                        .map(auth -> auth.getAuthority())
+                        .toList())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMinutes))
                 .signWith(jwtSecretKey, SignatureAlgorithm.HS512)
@@ -62,5 +66,18 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public Key getJwtSecretKey(){
+        return jwtSecretKey;
+    }
+
+    public List<String> obtenerRolesDesdeToken(String token) {
+        return (List<String>) Jwts.parserBuilder()
+                .setSigningKey(jwtSecretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles");
     }
 }

@@ -15,9 +15,7 @@ public class RegistroProductoDTO {
     private BigDecimal descuentoProducto;
     private LocalDateTime fechaCreacionProducto;
 
-    private Vendedor vendedor;
-
-    private Categoria categoria;
+    private Long categoriaId;
 
     public String getNombreProducto() {
         return nombreProducto;
@@ -67,19 +65,11 @@ public class RegistroProductoDTO {
         this.fechaCreacionProducto = fechaCreacionProducto;
     }
 
-    public Vendedor getVendedor() {
-        return vendedor;
+    public Long getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
     }
 }

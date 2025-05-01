@@ -10,7 +10,7 @@ public class RegistroProductoResponse {
     private String nombreProducto;
     private String descripcionProducto;
     private BigDecimal precioProducto;
-    private Integer stockPorducto;
+    private Integer stockProducto;
     private BigDecimal descuentoProducto;
     private LocalDateTime fechaCreacionProducto;
 
@@ -52,12 +52,12 @@ public class RegistroProductoResponse {
         this.precioProducto = precioProducto;
     }
 
-    public Integer getStockPorducto() {
-        return stockPorducto;
+    public Integer getStockProducto() {
+        return stockProducto;
     }
 
-    public void setStockPorducto(Integer stockPorducto) {
-        this.stockPorducto = stockPorducto;
+    public void setStockProducto(Integer stockProducto) {
+        this.stockProducto = stockProducto;
     }
 
     public BigDecimal getDescuentoProducto() {
