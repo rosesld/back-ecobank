@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ public class JwtTokenProvider {
 
     private final String jwtSecret = "clave_super_segura_123456789_ecobank";
     private final long jwtExpirationInMinutes = 86400000;
-    private final Key jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    private final Key jwtSecretKey = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
     /*
     @Value("${jwt.secret}")
@@ -47,7 +48,7 @@ public class JwtTokenProvider {
                         .toList())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMinutes))
-                .signWith(jwtSecretKey, SignatureAlgorithm.HS512)
+                .signWith(jwtSecretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 

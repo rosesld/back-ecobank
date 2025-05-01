@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface VendedorRepository extends JpaRepository<Vendedor, Long> {
     Boolean existsByUsuarioUsuarioEmail(String email);
+    Optional<Vendedor> findByUsuarioUsuarioId(Long usuarioId);
 }

@@ -38,29 +38,50 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String path = request.getRequestURI();
+        System.out.println("==> Solicitando ruta: " + path);
 
+        // Si el path está en la lista de rutas excluidas, pasa al siguiente filtro
         if (EXCLUDED_PATHS.stream().anyMatch(path::startsWith)) {
+            System.out.println("==> Ruta excluida del filtro, se omite autenticación.");
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = getTokenFromRequest(request);
 
-        if (StringUtils.hasText(token) && jwtTokenProvider.validarToken(token)) {
-            String email = jwtTokenProvider.obtenerEmailDesdeToken(token);
-            List<String> roles = jwtTokenProvider.obtenerRolesDesdeToken(token);
+        System.out.println("==> TOKEN RECIBIDO: " + token);
 
-            var authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
-
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(email, null, authorities);
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (!StringUtils.hasText(token)) {
+            System.out.println("==> Token ausente o mal formado");
         }
 
+        boolean tokenValido = jwtTokenProvider.validarToken(token);
+        System.out.println("==> TOKEN VÁLIDO: " + tokenValido);
+
+        if (StringUtils.hasText(token) && tokenValido) {
+            try {
+                String email = jwtTokenProvider.obtenerEmailDesdeToken(token);
+                List<String> roles = jwtTokenProvider.obtenerRolesDesdeToken(token);
+                System.out.println("==> Email extraído del token: " + email);
+                System.out.println("==> Roles extraídos del token: " + roles);
+
+                var authorities = roles.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(email, token, authorities);
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                System.out.println("==> Autenticación colocada en el SecurityContext.");
+            } catch (Exception e) {
+                System.out.println("==> Error al procesar el token: " + e.getMessage());
+                e.printStackTrace(); // Opcional: muestra el stack completo en consola
+            }
+        }
+
+        // Continuar con el filtro
         filterChain.doFilter(request, response);
     }
 

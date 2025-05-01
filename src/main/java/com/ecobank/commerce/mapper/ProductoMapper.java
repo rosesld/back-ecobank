@@ -38,6 +38,9 @@ public class ProductoMapper {
         dto.setFechaCreacionProducto(producto.getProductoFechaCreacion());
         dto.setRazonSocialVendedor(vendedor.getVendedorRazonSocial());
 
+        dto.setNombrePyme(vendedor.getNombrePyme());
+        dto.setDescripcionPyme(vendedor.getDescripcionPyme());
+
         List<String> urls = producto.getImagenes().stream()
                 .map(Imagen::getImagenUrl)
                 .collect(Collectors.toList());

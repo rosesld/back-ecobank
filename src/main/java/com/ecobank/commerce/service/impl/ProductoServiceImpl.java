@@ -74,10 +74,7 @@ public class ProductoServiceImpl implements ProductoService{
 
         Long usuarioId = jwtUtils.getUsuarioIdDesdeToken();
 
-        Optional<Vendedor> vendedorOptional = vendedorRepository.findById(usuarioId);
-        if (!vendedorOptional.isPresent()) {
-            throw new IllegalArgumentException("El vendedor asociado no existe");
-        }
+        Optional<Vendedor> vendedorOptional = vendedorRepository.findByUsuarioUsuarioId(usuarioId);
 
         Optional<Categoria> categoriaOptional = categoriaRepository.findById(registroProductoDTO.getCategoriaId());
         if(!categoriaOptional.isPresent()){

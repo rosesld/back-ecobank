@@ -27,7 +27,6 @@ public class ProductoController {
         this.productoServiceImpl = productoServiceImpl;
     }
 
-    @PreAuthorize("hasRole('VENDEDOR')")
     @PostMapping(value = "/guardar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<RegistroProductoResponse> crearProducto(@RequestPart("producto") RegistroProductoDTO dto,
                                                                   @RequestPart(value = "imagenes", required = false)List<MultipartFile> imagenes){

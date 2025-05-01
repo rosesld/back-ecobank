@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Component
@@ -14,19 +15,23 @@ public class JwtUtils {
 
     public Long getUsuarioIdDesdeToken() {
         String token = extractTokenFromContext();
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret.getBytes())
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(jwtSecret.getBytes(StandardCharsets.UTF_8)) // Usa la misma codificación
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
 
         return claims.get("usuarioId", Long.class);
     }
 
+    // Extrae el token directamente desde SecurityContextHolder
     private String extractTokenFromContext() {
-        String authHeader = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-        if (authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7);
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getCredentials() instanceof String token) {
+            return token; // El token ya viene limpio, sin "Bearer "
         }
-        throw new RuntimeException("Token JWT no encontrado");
+
+        throw new RuntimeException("Token JWT no encontrado en SecurityContext");
     }
 }

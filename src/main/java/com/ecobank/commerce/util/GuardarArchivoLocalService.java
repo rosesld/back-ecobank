@@ -17,17 +17,22 @@ public class GuardarArchivoLocalService {
 
     public String saveFile(MultipartFile file) {
         try {
+
             if (!Files.exists(rootPath)) {
                 Files.createDirectories(rootPath);
             }
 
+
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path filePath = rootPath.resolve(fileName);
 
+
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
 
             return "/images/" + fileName;
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException("Error al guardar archivo: " + e.getMessage());
         }
     }

@@ -51,7 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/productos/productos/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/categorias/all").permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/api/productos/guardar").hasAuthority("VENDEDOR")
+                        .requestMatchers(HttpMethod.POST, "/api/productos/guardar").hasRole("VENDEDOR")
 
                         // Importante: el orden importa. Esta línea se aplica a cualquier otra ruta de vendedor
                         .requestMatchers("/api/vendedor/**").hasAuthority("VENDEDOR")
