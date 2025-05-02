@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/vendedor/registro-vendedor").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/registro-cliente").permitAll()
 
                         // Otras rutas públicas
                         .requestMatchers(HttpMethod.GET, "/api/productos/filtrados-productos").permitAll()

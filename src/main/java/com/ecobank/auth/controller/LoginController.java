@@ -50,6 +50,7 @@ public class LoginController {
 
         LoginResponse response = new LoginResponse(
                 jwt,
+                nombreCompleto,
                 "Bearer",
                 userDetails.getId(),
                 userDetails.getEmail(),

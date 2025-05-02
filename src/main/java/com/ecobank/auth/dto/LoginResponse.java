@@ -16,8 +16,9 @@ public class LoginResponse {
 
     private Set<String> roles;
 
-    public LoginResponse(String token, String tipo, Long id, String email, Set<String> roles) {
+    public LoginResponse(String token, String nombreCompleto, String tipo, Long id, String email, Set<String> roles) {
         this.token = token;
+        this.nombreCompleto = nombreCompleto;
         this.tipo = tipo;
         this.id = id;
         this.email = email;
@@ -30,6 +31,14 @@ public class LoginResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
+
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
     }
 
     public String getTipo() {
