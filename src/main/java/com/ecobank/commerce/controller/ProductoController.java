@@ -57,7 +57,7 @@ public class ProductoController {
             @RequestParam(required = false) BigDecimal precioMax,
             @RequestParam(required = false) Long categoriaId,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "productoNombre,asc") String sort
     ) {
         return productoServiceImpl.listaProductosFiltrados(nombre, precioMin, precioMax, categoriaId, page, size, sort);
