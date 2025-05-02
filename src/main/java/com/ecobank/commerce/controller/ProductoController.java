@@ -69,4 +69,10 @@ public class ProductoController {
         return ResponseEntity.ok(producto);
     }
 
+    @PreAuthorize("hasRole('VENDEDOR')")
+    @GetMapping("/mis-productos")
+    public ResponseEntity<List<RegistroProductoResponse>> obtenerMisProductos() {
+        List<RegistroProductoResponse> productos = productoServiceImpl.obtenerProductosDelVendedorAutenticado();
+        return ResponseEntity.ok(productos);
+    }
 }

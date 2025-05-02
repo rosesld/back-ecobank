@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
@@ -25,4 +26,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
             @Param("categoriaId") Long categoriaId,
             Pageable pageable
     );
+    List<Producto> findByVendedor_VendedorId(Long vendedorId);
 }

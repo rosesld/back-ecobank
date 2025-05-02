@@ -13,12 +13,16 @@ import com.ecobank.commerce.repository.ImagenRepository;
 import com.ecobank.commerce.repository.ProductoRepository;
 import com.ecobank.commerce.repository.VendedorRepository;
 import com.ecobank.commerce.service.services.ProductoService;
+import com.ecobank.commerce.util.GuardarArchivoGCSService;
 import com.ecobank.commerce.util.GuardarArchivoLocalService;
+import com.ecobank.security.model.UserDetailsImpl;
 import com.ecobank.security.utils.JwtUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,15 +39,16 @@ public class ProductoServiceImpl implements ProductoService{
     private final ProductoRepository productoRepository;
     private final VendedorRepository vendedorRepository;
     private final ImagenRepository imagenRepository;
-    private final GuardarArchivoLocalService guardarArchivoLocalService;
+    //private final GuardarArchivoLocalService guardarArchivoLocalService;
+    private final GuardarArchivoGCSService guardarArchivoGCSService;
     private final CategoriaRepository categoriaRepository;
     private final JwtUtils jwtUtils;
 
-    public ProductoServiceImpl(ProductoRepository productoRepository, VendedorRepository vendedorRepository, ImagenRepository imagenRepository, GuardarArchivoLocalService guardarArchivoLocalService, CategoriaRepository categoriaRepository, JwtUtils jwtUtils) {
+    public ProductoServiceImpl(ProductoRepository productoRepository, VendedorRepository vendedorRepository, ImagenRepository imagenRepository, GuardarArchivoGCSService guardarArchivoGCSService, CategoriaRepository categoriaRepository, JwtUtils jwtUtils) {
         this.productoRepository = productoRepository;
         this.vendedorRepository = vendedorRepository;
         this.imagenRepository = imagenRepository;
-        this.guardarArchivoLocalService = guardarArchivoLocalService;
+        this.guardarArchivoGCSService = guardarArchivoGCSService;
         this.categoriaRepository = categoriaRepository;
         this.jwtUtils = jwtUtils;
     }
@@ -98,7 +103,7 @@ public class ProductoServiceImpl implements ProductoService{
         // Subir imágenes
         List<Imagen> imagenes = new ArrayList<>();
         for (MultipartFile archivo : archivos) {
-            String url = guardarArchivoLocalService.saveFile(archivo); // ejemplo: retorna "/static/imagen1.jpg"
+            String url = guardarArchivoGCSService.saveFile(archivo); // ejemplo: retorna "/static/imagen1.jpg"
             Imagen img = new Imagen();
             img.setImagenUrl(url);
             img.setProducto(productoGuardado);
@@ -114,6 +119,7 @@ public class ProductoServiceImpl implements ProductoService{
         // Retornar el producto guardado mapeado a DTO
         return ProductoMapper.toDto(productoGuardado, vendedor);
     }
+
     public ProductoPageResponse listaProductosFiltrados(
             String nombre,
             BigDecimal precioMin,
@@ -202,4 +208,51 @@ public class ProductoServiceImpl implements ProductoService{
         return response;
     }
 
+    private RegistroProductoResponse mapearAResponse(Producto producto) {
+        RegistroProductoResponse response = new RegistroProductoResponse();
+        response.setProductoId(producto.getProductoId());
+        response.setNombreProducto(producto.getProductoNombre());
+        response.setDescripcionProducto(producto.getProductoDescripcion());
+        response.setPrecioProducto(producto.getProductoPrecio());
+        response.setDescuentoProducto(producto.getProductoDescuento());
+        response.setStockProducto(producto.getProductoStock());
+        response.setFechaCreacionProducto(producto.getProductoFechaCreacion());
+
+        List<String> urlsImagenes = producto.getImagenes().stream()
+                .map(Imagen::getImagenUrl)
+                .collect(Collectors.toList());
+        response.setUrlsImagenes(urlsImagenes);
+
+        if (producto.getVendedor() != null) {
+            response.setNombrePyme(producto.getVendedor().getNombrePyme());
+            response.setDescripcionPyme(producto.getVendedor().getDescripcionPyme());
+            response.setRazonSocialVendedor(producto.getVendedor().getVendedorRazonSocial());
+        }
+
+        return response;
+    }
+
+    @Override
+    public List<RegistroProductoResponse> obtenerProductosDelVendedorAutenticado() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getPrincipal() == null) {
+            throw new RuntimeException("No se pudo obtener el email del vendedor autenticado.");
+        }
+
+        String email;
+        if (authentication.getPrincipal() instanceof String principalEmail) {
+            email = principalEmail;
+        } else if (authentication.getPrincipal() instanceof UserDetailsImpl userDetails) {
+            email = userDetails.getEmail();
+        } else {
+            throw new RuntimeException("No se pudo determinar el tipo de autenticaciÃ³n.");
+        }
+
+        Vendedor vendedor = vendedorRepository.findByUsuarioUsuarioEmail(email)
+                .orElseThrow(() -> new RuntimeException("Vendedor no encontrado"));
+
+        List<Producto> productos = productoRepository.findByVendedor_VendedorId(vendedor.getVendedorId());
+
+        return productos.stream().map(this::mapearAResponse).toList();
+    }
 }

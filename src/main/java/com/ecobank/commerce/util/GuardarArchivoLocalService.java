@@ -1,5 +1,6 @@
 package com.ecobank.commerce.util;
 
+import com.ecobank.commerce.service.services.AlmacenamientoArchivoService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,8 +11,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
-@Service
-public class GuardarArchivoLocalService {
+@Service("almacenamientoLocalService")
+public class GuardarArchivoLocalService implements AlmacenamientoArchivoService {
 
     private final Path rootPath = Paths.get("src/main/resources/static/images/");
 
@@ -22,13 +23,10 @@ public class GuardarArchivoLocalService {
                 Files.createDirectories(rootPath);
             }
 
-
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path filePath = rootPath.resolve(fileName);
 
-
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
 
             return "/images/" + fileName;
         } catch (IOException e) {
